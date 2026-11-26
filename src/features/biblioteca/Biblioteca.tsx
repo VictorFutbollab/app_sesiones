@@ -5,7 +5,7 @@ import { contarFiltros, filtrar, FILTROS_VACIOS, type Filtros, type Orden } from
 import { puedeCrearEjercicio } from '../../logic/planes'
 import { FASES } from '../../data/taxonomia'
 import type { FaseJuego } from '../../model/sesiones'
-import { Hoja, Vacio } from '../../ui/base'
+import { Cabecera, Hoja, Redondo, Vacio } from '../../ui/base'
 import { Icono } from '../../ui/Icono'
 import { PanelFiltros } from './Filtros'
 import { TarjetaEjercicio, edadEquipo, guardarPreferencia, useBiblioteca, usePreferencias } from './comun'
@@ -56,12 +56,11 @@ export function Biblioteca() {
 
   return (
     <div>
-      <div className="fila entre">
-        <h1>Biblioteca</h1>
-        <button className="btn primario" onClick={nuevo}><Icono n="mas" t={18} /> Crear ejercicio</button>
-      </div>
+      <Cabecera titulo="Biblioteca" sub={`${lista ? `${lista.length} ejercicio${lista.length === 1 ? '' : 's'}` : 'Cargando…'}${!pro ? ' · plan Gratis' : ''}`}>
+        <Redondo primario icono="mas" etiqueta="Crear ejercicio" onClick={nuevo} />
+      </Cabecera>
 
-      <div className="pila bloque">
+      <div className="pila">
         <div className="buscador" role="search">
           <Icono n="buscar" />
           <input className="entrada" type="search" value={f.texto} onChange={(e) => set({ ...f, texto: e.target.value })} placeholder="Busca: rondo, presión, conducción…" aria-label="Buscar ejercicios" />
@@ -82,8 +81,8 @@ export function Biblioteca() {
         ) : null}
       </div>
 
-      <div className="fila entre" style={{ marginBottom: 12 }}>
-        <p className="sec num" aria-live="polite" style={{ margin: 0 }}>{lista ? `${lista.length} ejercicio${lista.length === 1 ? '' : 's'}` : 'Cargando…'}{!pro ? ' · plan Gratis' : ''}</p>
+      <div className="fila entre" style={{ margin: '14px 0 12px' }}>
+        <p className="sec num" aria-live="polite" style={{ margin: 0 }}>{n ? `${n} filtro${n === 1 ? '' : 's'} activo${n === 1 ? '' : 's'}` : 'Ordenar por'}</p>
         <div className="fila">
           {n ? <button className="btn fantasma" onClick={() => set({ ...FILTROS_VACIOS })}>Quitar filtros</button> : null}
           <select className="entrada" style={{ width: 'auto' }} value={orden} onChange={(e) => setOrden(e.target.value as Orden)} aria-label="Ordenar">

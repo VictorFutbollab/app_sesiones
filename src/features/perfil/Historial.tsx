@@ -19,7 +19,7 @@ export function Historial({ filaId }: { filaId: string }) {
   return (
     <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10 }}>
       {h.map((x) => (
-        <li key={x.id} className="tarjeta" style={{ padding: 12 }}>
+        <li key={x.id} className="nota-t">
           <div className="fila entre">
             <strong>{ACCION[x.tipo]}</strong>
             <span className="ter">{new Date(x.ts).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' })}</span>

@@ -1,7 +1,8 @@
 import { Suspense, lazy } from 'react'
 import { Proveedor, useApp } from './estado'
 import { href, useRuta, type Ruta } from './router'
-import { Icono, Logo } from '../ui/Icono'
+import { Icono } from '../ui/Icono'
+import { Marca } from '../ui/Marca'
 import { Bienvenida } from '../features/cuenta/Bienvenida'
 import { CrearEquipo } from '../features/cuenta/CrearEquipo'
 import { Inicio } from '../features/inicio/Inicio'
@@ -66,21 +67,23 @@ function Marco() {
   return (
     <div className="app">
       <nav className="nav-lat" aria-label="Principal">
-        <a href="#inicio" className="marca" style={{ padding: '4px 8px 12px' }}><Logo /> <span>Sesiones<small style={{ display: 'block' }}>FutbolLab</small></span></a>
         <a href={href(crear)} className="crear"><Icono n="mas" /> Nueva sesión</a>
         {NAV.map((x) => (
           <a key={x.t} href={href(x.r)} aria-current={x.activo(r) ? 'page' : undefined}><Icono n={x.i} /> {x.t}</a>
         ))}
         <div className="pie"><EstadoSync /></div>
       </nav>
-      <div>
-        <header className="barra-sup">
-          <a href="#inicio" className="marca"><Logo t={26} /> Sesiones</a>
-          <div className="derecha">
-            <EstadoSync />
-            <a href="#perfil--equipo" className="chip" title="Equipo activo">{equipo.nombre}</a>
-          </div>
-        </header>
+      <header className="barra-sup">
+        <a href="#inicio" className="marca" aria-label="Inicio"><Marca alto={26} app="Sesiones" /></a>
+        <div className="derecha">
+          <EstadoSync />
+          <a href="#perfil--equipo" className="barra-equipo" title="Cambiar de equipo">
+            <span className="barra-equipo-txt"><strong>{equipo.nombre}</strong><small>{equipo.modalidad.replace('F', 'Fútbol ')}</small></span>
+            <span className="barra-escudo" aria-hidden><Icono n="equipo" t={18} /></span>
+          </a>
+        </div>
+      </header>
+      <div className="cuerpo-app">
         <main className="contenido" id="contenido">
           <Suspense fallback={<div className="vacio">Cargando…</div>}>
             <Pantalla r={r} />

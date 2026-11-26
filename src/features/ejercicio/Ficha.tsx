@@ -3,7 +3,7 @@ import { useApp, useTabla } from '../../app/estado'
 import { href, ir, volver } from '../../app/router'
 import { FASES, TIPOS, BLOQUES } from '../../data/taxonomia'
 import type { Carpeta } from '../../model/sesiones'
-import { EtiquetaOrigen, Hoja, Intensidad, Vacio, fechaCorta } from '../../ui/base'
+import { Cabecera, Dato, EtiquetaOrigen, FilaLista, Hoja, Intensidad, Redondo, Seccion, Vacio, fechaCorta } from '../../ui/base'
 import { Icono } from '../../ui/Icono'
 import { Pizarra } from '../pizarra/Pizarra'
 import { guardarPreferencia, usePreferencias } from '../biblioteca/comun'
@@ -76,82 +76,89 @@ export function Ficha({ id }: { id: string }) {
 
   return (
     <article className="ficha">
-      <div className="fila entre">
-        <button className="btn fantasma" onClick={() => volver({ n: 'biblioteca' })}><Icono n="atras" t={18} /> Volver</button>
-        <div className="fila">
-          <button className={`btn-icono${pref?.favorito ? ' activo' : ''}`} aria-pressed={!!pref?.favorito} aria-label="Favorito" onClick={() => guardarPreferencia(repo, prefs, 'ejercicio', e.id, { favorito: !pref?.favorito })}><Icono n="estrella" relleno={pref?.favorito} /></button>
-          {mio ? <a className="btn" href={href({ n: 'ejercicio-editar', id: e.id })}><Icono n="editar" t={18} /> Editar</a> : null}
-        </div>
-      </div>
+      <Cabecera titulo={e.titulo} sub={`${TIPOS[e.tipo]} · ${FASES[e.faseJuego]}`} atras={() => volver({ n: 'biblioteca' })}>
+        {mio ? <Redondo icono="editar" etiqueta="Editar" href={href({ n: 'ejercicio-editar', id: e.id })} /> : null}
+        <Redondo icono="estrella" etiqueta={pref?.favorito ? 'Quitar de favoritos' : 'Añadir a favoritos'} activo={!!pref?.favorito} onClick={() => guardarPreferencia(repo, prefs, 'ejercicio', e.id, { favorito: !pref?.favorito })} />
+      </Cabecera>
 
-      <div className="dos-col" style={{ marginTop: 12 }}>
-        <div ref={caja}>
-          <Pizarra p={e.pizarra} titulo={e.titulo} auto={e.pizarra.fases.length > 1} />
-        </div>
+      <div className="dos-col">
         <div>
-          <div className="fila" style={{ gap: 6 }}>
-            <EtiquetaOrigen origen={e.origen} /><span className="etiqueta">{TIPOS[e.tipo]}</span><span className="etiqueta">{FASES[e.faseJuego]}</span>
+          <div className="ficha-pizarra" ref={caja}>
+            <Pizarra p={e.pizarra} titulo={e.titulo} auto={e.pizarra.fases.length > 1} />
+          </div>
+          <div className="etiquetas" style={{ marginTop: 12 }}>
+            <EtiquetaOrigen origen={e.origen} /><span className="etiqueta">{e.principio}</span>
             {e.eliminadoEn ? <span className="etiqueta demo">En la papelera</span> : null}
           </div>
-          <h1 style={{ marginTop: 8 }}>{e.titulo}</h1>
-          <p className="sec" style={{ fontSize: '1.05em' }}>{e.objetivo}</p>
-          <p className="ter">{e.autor} · {e.principio}{e.tecnica.length ? ` · ${e.tecnica.join(', ')}` : ''}</p>
-          <div className="datos-ficha">
-            <div><b>{e.jugadoresMin}–{e.jugadoresMax}</b><span>jugadores</span></div>
-            <div><b>{e.espacio.ancho}×{e.espacio.largo}</b><span>metros</span></div>
-            <div><b>{e.series}×{e.duracion}′</b><span>series × min</span></div>
-            <div><b>{minutosEjercicio(e)}′</b><span>total</span></div>
-            <div><b>{e.edadMin}–{e.edadMax > 20 ? '+' : e.edadMax}</b><span>años</span></div>
-            <div><b style={{ fontSize: '1em', paddingTop: 6 }}><Intensidad v={e.intensidad} /></b><span>intensidad {e.intensidad}/5</span></div>
-          </div>
-          <div className="acciones" style={{ marginTop: 14 }}>
-            <button className="btn primario" onClick={() => setHoja('sesion')}><Icono n="mas" t={18} /> Añadir a sesión</button>
-            <button className="btn" onClick={() => copiar('(variante)')}>Crear variante</button>
-            <button className="btn" onClick={() => setHoja('carpeta')}><Icono n="carpeta" t={18} /> Carpeta</button>
-            <button className="btn" onClick={pdf}><Icono n="pdf" t={18} /> PDF</button>
-            <button className="btn" onClick={imagen}><Icono n="imagen" t={18} /> Imagen</button>
-            <a className="btn" href={enlaceWhatsApp(resumen)} target="_blank" rel="noopener"><Icono n="whatsapp" t={18} /> WhatsApp</a>
-            {!mio ? <button className="btn" onClick={() => copiar('(copia)')}><Icono n="copiar" t={18} /> Duplicar</button> : null}
-          </div>
-          <div className="fila" style={{ marginTop: 12 }} role="group" aria-label="Valoración">
-            <span className="ter">Tu valoración</span>
-            {[1, 2, 3, 4, 5].map((v) => (
-              <button key={v} className="btn-icono" style={{ width: 36, height: 36, color: (pref?.valoracion ?? 0) >= v ? 'var(--amber)' : undefined }} aria-label={`${v} de 5`} aria-pressed={pref?.valoracion === v} onClick={() => guardarPreferencia(repo, prefs, 'ejercicio', e.id, { valoracion: pref?.valoracion === v ? null : v })}>
-                <Icono n="estrella" t={18} relleno={(pref?.valoracion ?? 0) >= v} />
-              </button>
-            ))}
-          </div>
+          {e.objetivo ? <p style={{ fontSize: '1.08em', margin: '10px 0 0' }}>{e.objetivo}</p> : null}
+
+          <Seccion>
+            <button className="btn primario grande ancho" onClick={() => setHoja('sesion')}><Icono n="mas" /> Añadir a una sesión</button>
+            <div className="fila-redondos">
+              <Redondo texto icono="pdf" etiqueta="PDF" onClick={pdf} />
+              <Redondo texto icono="imagen" etiqueta="Imagen" onClick={imagen} />
+              <Redondo texto icono="whatsapp" etiqueta="WhatsApp" href={enlaceWhatsApp(resumen)} nueva />
+              <Redondo texto icono="carpeta" etiqueta="Carpeta" onClick={() => setHoja('carpeta')} />
+              <Redondo texto icono="copiar" etiqueta="Variante" onClick={() => copiar('(variante)')} />
+            </div>
+          </Seccion>
+        </div>
+
+        <div>
+          <Seccion titulo="De un vistazo">
+            <div className="datos-t">
+              <Dato etiqueta="Jugadores" valor={`${e.jugadoresMin}–${e.jugadoresMax}`} />
+              <Dato etiqueta="Espacio" valor={`${e.espacio.ancho}×${e.espacio.largo}`} extra="metros" />
+              <Dato etiqueta="Duración" valor={`${minutosEjercicio(e)}′`} extra={`${e.series} × ${e.duracion}′`} />
+              <Dato etiqueta="Edad" valor={`${e.edadMin}–${e.edadMax > 20 ? '+' : e.edadMax}`} extra="años" />
+              <Dato etiqueta="Intensidad" valor={<Intensidad v={e.intensidad} />} extra={`${e.intensidad} de 5`} />
+              <Dato etiqueta="Material" valor={e.material.length || '—'} extra={e.material.join(', ') || 'sin material'} />
+            </div>
+          </Seccion>
+          <Seccion titulo="Tu valoración">
+            <div className="estrellas" role="group" aria-label="Valoración">
+              {[1, 2, 3, 4, 5].map((v) => (
+                <button key={v} className={(pref?.valoracion ?? 0) >= v ? 'on' : ''} aria-label={`${v} de 5`} aria-pressed={pref?.valoracion === v} onClick={() => guardarPreferencia(repo, prefs, 'ejercicio', e.id, { valoracion: pref?.valoracion === v ? null : v })}>
+                  <Icono n="estrella" relleno={(pref?.valoracion ?? 0) >= v} />
+                </button>
+              ))}
+            </div>
+            <p className="ter">{e.autor}{e.tecnica.length ? ` · ${e.tecnica.join(', ')}` : ''}</p>
+          </Seccion>
         </div>
       </div>
 
       <div className="dos-col">
-        <div>
-          <section><h2>Organización</h2><p>{e.organizacion}</p></section>
-          <section><h2>Desarrollo</h2><p>{e.desarrollo}</p></section>
-          {e.reglas.length ? <section><h2>Reglas</h2><ul>{e.reglas.map((x) => <li key={x}>{x}</li>)}</ul></section> : null}
-          <section><h2>Variantes</h2>
-            <ul>{e.variantes.facil.map((x) => <li key={x}><strong>Más fácil:</strong> {x}</li>)}{e.variantes.dificil.map((x) => <li key={x}><strong>Más difícil:</strong> {x}</li>)}</ul>
-          </section>
-        </div>
-        <div>
-          <section><h2>Consignas</h2><ul>{e.consignas.map((x) => <li key={x}>{x}</li>)}</ul></section>
-          <section><h2>Errores típicos</h2><ul>{e.errores.map((x) => <li key={x}>{x}</li>)}</ul></section>
-          <section><h2>Material</h2><p>{e.material.join(' · ') || '—'}</p></section>
-          {e.video ? <section><h2>Vídeo</h2><a href={e.video} target="_blank" rel="noopener noreferrer">Ver vídeo</a></section> : null}
-          <section><h2>Notas</h2><Notas ejercicioId={e.id} /></section>
-          {mio ? (
-            <section className="fila">
-              <button className="btn" onClick={() => setHoja('historial')}><Icono n="historial" t={18} /> Historial</button>
-              {e.eliminadoEn ? (
-                <button className="btn" onClick={() => repo.restaurar('ejercicios', e.id)}>Recuperar</button>
-              ) : (
-                <button className="btn peligro" onClick={async () => { await repo.papelera('ejercicios', e.id); aviso('Ejercicio en la papelera (30 días)', { texto: 'Deshacer', hacer: () => void repo.restaurar('ejercicios', e.id) }); ir({ n: 'biblioteca' }) }}><Icono n="papelera" t={18} /> Papelera</button>
-              )}
-              <button className="btn" onClick={() => repo.archivar('ejercicios', e.id, !e.archivado)}>{e.archivado ? 'Desarchivar' : 'Archivar'}</button>
-            </section>
+        <Seccion titulo="Cómo se monta">
+          <h3>Organización</h3><p>{e.organizacion || '—'}</p>
+          <h3>Desarrollo</h3><p>{e.desarrollo || '—'}</p>
+          {e.reglas.length ? <><h3>Reglas</h3><ul>{e.reglas.map((x) => <li key={x}>{x}</li>)}</ul></> : null}
+          {e.variantes.facil.length + e.variantes.dificil.length ? (
+            <><h3>Variantes</h3><ul>{e.variantes.facil.map((x) => <li key={x}><strong>Más fácil:</strong> {x}</li>)}{e.variantes.dificil.map((x) => <li key={x}><strong>Más difícil:</strong> {x}</li>)}</ul></>
           ) : null}
-        </div>
+          {e.video ? <a className="btn" href={e.video} target="_blank" rel="noopener noreferrer"><Icono n="play" t={18} /> Ver vídeo</a> : null}
+        </Seccion>
+        <Seccion titulo="Para el entrenador">
+          <h3>Consignas</h3>{e.consignas.length ? <ul>{e.consignas.map((x) => <li key={x}>{x}</li>)}</ul> : <p className="sec">—</p>}
+          <h3>Errores típicos</h3>{e.errores.length ? <ul>{e.errores.map((x) => <li key={x}>{x}</li>)}</ul> : <p className="sec">—</p>}
+        </Seccion>
       </div>
+
+      <Seccion titulo="Notas"><Notas ejercicioId={e.id} /></Seccion>
+
+      {mio ? (
+        <Seccion>
+          <FilaLista izq={<span className="icono-cuadro"><Icono n="historial" t={20} /></span>} titulo="Historial de cambios" der={<Icono n="adelante" t={18} />} onClick={() => setHoja('historial')} />
+          <FilaLista izq={<span className="icono-cuadro"><Icono n="archivar" t={20} /></span>} titulo={e.archivado ? 'Desarchivar' : 'Archivar'} sub="Lo quita de la biblioteca sin borrarlo" onClick={() => repo.archivar('ejercicios', e.id, !e.archivado)} />
+          {e.eliminadoEn ? (
+            <FilaLista izq={<span className="icono-cuadro"><Icono n="reiniciar" t={20} /></span>} titulo="Recuperar de la papelera" onClick={() => repo.restaurar('ejercicios', e.id)} />
+          ) : (
+            <button className="btn peligro-borde ancho" onClick={async () => { await repo.papelera('ejercicios', e.id); aviso('Ejercicio en la papelera (30 días)', { texto: 'Deshacer', hacer: () => void repo.restaurar('ejercicios', e.id) }); ir({ n: 'biblioteca' }) }}><Icono n="papelera" t={18} /> Mover a la papelera</button>
+          )}
+        </Seccion>
+      ) : (
+        <button className="btn ancho" onClick={() => copiar('(copia)')}><Icono n="copiar" t={18} /> Guardar una copia en mis ejercicios</button>
+      )}
 
       <Hoja titulo="Añadir a una sesión" abierta={hoja === 'sesion'} cerrar={() => setHoja(null)}>
         <div className="pila">

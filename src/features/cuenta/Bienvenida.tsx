@@ -3,7 +3,7 @@ import type { RolEquipo, Usuario } from '../../model/comun'
 import type { Repo } from '../../lib/db/repo'
 import { entrar, entrarCon, recuperar, registrar, validarRegistro, type DatosRegistro } from '../../lib/cuenta'
 import { MODO_DEMO } from '../../lib/supabase/cliente'
-import { Logo } from '../../ui/Icono'
+import { MarcoAcceso } from '../../ui/Marca'
 
 const ROLES: [RolEquipo, string][] = [['entrenador_principal', 'Entrenador/a principal'], ['ayudante', 'Ayudante'], ['preparador_fisico', 'Preparador/a físico'], ['coordinador', 'Coordinador/a']]
 
@@ -41,9 +41,14 @@ export function Bienvenida({ repo, listo }: { repo: Repo; listo: (u: Usuario) =>
   }
 
   return (
-    <main className="bienvenida">
-      <form className="tarjeta" onSubmit={enviar} noValidate>
-        <div className="fila"><Logo t={40} /><div><div className="titulo" style={{ fontSize: '1.4em' }}>FutbolLab Sesiones</div><div className="ter">La sesión de mañana, lista en 5 minutos.</div></div></div>
+    <MarcoAcceso>
+      <form className="pila-form" onSubmit={enviar} noValidate>
+        {!MODO_DEMO && modo !== 'confirmar' ? (
+          <div className="segmentado ancho" role="tablist">
+            <button type="button" role="tab" aria-selected={modo === 'entrar' || modo === 'recuperar'} aria-pressed={modo === 'entrar' || modo === 'recuperar'} onClick={() => setModo('entrar')}>Entrar</button>
+            <button type="button" role="tab" aria-selected={modo === 'registro'} aria-pressed={modo === 'registro'} onClick={() => setModo('registro')}>Crear cuenta</button>
+          </div>
+        ) : null}
         {MODO_DEMO ? <div className="banda" role="note">Modo demostración: tu cuenta y tus datos se guardan solo en este dispositivo.</div> : null}
 
         {modo === 'confirmar' ? (
@@ -92,6 +97,6 @@ export function Bienvenida({ repo, listo }: { repo: Repo; listo: (u: Usuario) =>
           </>
         )}
       </form>
-    </main>
+    </MarcoAcceso>
   )
 }

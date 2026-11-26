@@ -10,7 +10,7 @@ import { Pizarra } from '../pizarra/Pizarra'
 import { Crono } from './Crono'
 import { Notas } from './Notas'
 import { Icono } from '../../ui/Icono'
-import { Vacio } from '../../ui/base'
+import { Dato, Vacio } from '../../ui/base'
 
 const CICLO: EstadoAsistencia[] = ['presente', 'ausente', 'justificado', 'no_disponible']
 const TEXTO: Record<EstadoAsistencia, string> = { presente: 'Está', ausente: 'Falta', justificado: 'Justificada', no_disponible: 'No disponible' }
@@ -90,30 +90,34 @@ export function ModoCampo({ id }: { id: string }) {
   return (
     <div className="campo-pantalla">
       <header>
-        <a className="btn-icono" href={href({ n: 'sesion', id })} aria-label="Salir del modo entrenamiento"><Icono n="cerrar" /></a>
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <strong className="titulo" style={{ fontSize: '1.2em', display: 'block' }}>{titulo}</strong>
-          <span className="ter">{s.objetivo || 'Entrenamiento'} · {duracionTotal(s.bloques)}′</span>
-        </div>
-        <button className="btn" onClick={() => setGrande(!grande)} aria-pressed={grande} title="Botones y texto más grandes, contraste máximo">{grande ? 'Normal' : 'Grande'}</button>
+        <header className="cabecera">
+          <a className="redondo" href={href({ n: 'sesion', id })} aria-label="Salir del modo entrenamiento"><Icono n="cerrar" /></a>
+          <div className="cabecera-txt">
+            <h1>{titulo}</h1>
+            <p className="sub">{s.objetivo || 'Entrenamiento'} · {duracionTotal(s.bloques)}′</p>
+          </div>
+          <button className="redondo" onClick={() => setGrande(!grande)} aria-pressed={grande} aria-label={grande ? 'Letra normal' : 'Letra grande'} title={grande ? 'Letra normal' : 'Botones y letra más grandes'}><span style={{ fontWeight: 800, fontSize: grande ? '0.9em' : '1.15em' }}>Aa</span></button>
+        </header>
       </header>
 
       <main>
         {paso === 'asistencia' ? (
-          <div className="pila">
-            <p className="sec" style={{ margin: 0 }}>Todos vienen marcados. Toca a quien falte (otro toque: justificada, no disponible).</p>
-            <div className="fila entre"><strong className="num" style={{ fontSize: '1.3em' }} aria-live="polite">{presentes} de {plantilla.length} están</strong></div>
+          <div className="caja">
+            <div className="caja-cab"><h2>¿Quién ha venido?</h2><span className="recuento num" aria-live="polite">{presentes} de {plantilla.length}</span></div>
+            <p className="sec">Todos vienen marcados. Toca a quien falte; otro toque: justificada o no disponible.</p>
             <div className="lista-asistencia">
               {plantilla.map((j) => {
                 const est = estadoDe(j)
                 return (
                   <button key={j.id} className={`jug ${est}`} onClick={() => tocar(j)} aria-label={`${j.dorsal} ${j.nombre}: ${TEXTO[est]}`}>
-                    <b>{j.dorsal}</b><span>{j.nombre}</span><small>{TEXTO[est]}</small>
+                    <b>{j.dorsal}</b>
+                    <span className="jug-txt"><span>{j.nombre}</span>{est !== 'presente' ? <small>{TEXTO[est]}</small> : null}</span>
+                    <span className="check" aria-hidden><Icono n="check" t={16} /></span>
                   </button>
                 )
               })}
             </div>
-            {plantilla.length === 0 ? <p className="sec">Tu equipo no tiene jugadores. Añádelos en Perfil → Equipo.</p> : null}
+            {plantilla.length === 0 ? <p className="sec">Tu equipo no tiene jugadores. Añádelos en Perfil → Plantilla.</p> : null}
           </div>
         ) : null}
 
@@ -121,68 +125,77 @@ export function ModoCampo({ id }: { id: string }) {
           <div className="dos-col">
             <div className="pila">
               <div>
-                <span className="etiqueta">{nombreBloque(ej.tipo)} · {ej.minutos}′</span>
-                <h1 style={{ marginTop: 6 }}>{e?.titulo ?? 'Ejercicio no disponible'}</h1>
+                <span className="etiqueta propio">{nombreBloque(ej.tipo)} · {ej.minutos}′</span>
+                <h2 style={{ marginTop: 8, fontSize: '1.6em', fontWeight: 800 }}>{e?.titulo ?? 'Ejercicio no disponible'}</h2>
               </div>
-              {e ? <Pizarra p={e.pizarra} titulo={e.titulo} auto={e.pizarra.fases.length > 1} /> : null}
+              {e ? <div className="ficha-pizarra"><Pizarra p={e.pizarra} titulo={e.titulo} auto={e.pizarra.fases.length > 1} /></div> : null}
             </div>
             <div className="pila">
               {e ? <Crono series={e.series} minutos={Math.max(1, Math.round((ej.minutos - ((e.series - 1) * e.descanso) / 60) / e.series))} descanso={e.descanso} alTerminar={() => aviso('Ejercicio terminado')} /> : null}
               {e ? (
-                <details open className="tarjeta">
-                  <summary style={{ fontWeight: 700, cursor: 'pointer', minHeight: 'var(--toque)', display: 'flex', alignItems: 'center' }}>Consignas</summary>
-                  <ul style={{ margin: 0, paddingLeft: 20, display: 'grid', gap: 6 }}>{e.consignas.map((c) => <li key={c}>{c}</li>)}</ul>
-                  <p className="ter">{e.organizacion}</p>
-                </details>
+                <div className="caja" style={{ margin: 0 }}>
+                  <h2 style={{ fontSize: '1.2em', fontWeight: 800 }}>Consignas</h2>
+                  <ul>{e.consignas.map((c) => <li key={c}>{c}</li>)}</ul>
+                  <p className="sec">{e.organizacion}</p>
+                </div>
               ) : null}
-              <div className="tarjeta"><strong>Notas de la sesión</strong><Notas sesionId={id} grande /></div>
+              <div className="caja" style={{ margin: 0 }}><h2 style={{ fontSize: '1.2em', fontWeight: 800 }}>Notas de la sesión</h2><Notas sesionId={id} grande /></div>
             </div>
           </div>
         ) : null}
 
         {paso === 'cierre' ? (
-          <div className="pila" style={{ maxWidth: 720, margin: '0 auto' }}>
-            <h2>¿Se cumplió el objetivo?</h2>
-            <p className="sec" style={{ margin: 0 }}>{s.objetivo || 'Objetivo de la sesión'}</p>
-            <div className="segmentado" style={{ width: '100%' }} role="group" aria-label="Objetivo cumplido">
-              {([['si', 'Sí'], ['en_parte', 'En parte'], ['no', 'No']] as [ObjetivoCumplido, string][]).map(([v, t]) => <button key={v} style={{ flex: 1 }} aria-pressed={obj === v} onClick={() => setObj(v)}>{t}</button>)}
+          <div style={{ maxWidth: 720, margin: '0 auto' }}>
+            <div className="caja">
+              <h2 style={{ fontSize: '1.2em', fontWeight: 800 }}>¿Se cumplió el objetivo?</h2>
+              <p className="sec">{s.objetivo || 'Objetivo de la sesión'}</p>
+              <div className="segmentado lleno" role="group" aria-label="Objetivo cumplido">
+                {([['si', 'Sí'], ['en_parte', 'En parte'], ['no', 'No']] as [ObjetivoCumplido, string][]).map(([v, t]) => <button key={v} aria-pressed={obj === v} onClick={() => setObj(v)}>{t}</button>)}
+              </div>
             </div>
-            <h2>Esfuerzo del grupo (1–10)</h2>
-            <div className="rpe" role="group" aria-label="Esfuerzo percibido">
-              {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => <button key={n} aria-pressed={rpe === n} onClick={() => setRpe(n)}>{n}</button>)}
+            <div className="caja">
+              <h2 style={{ fontSize: '1.2em', fontWeight: 800 }}>Esfuerzo del grupo</h2>
+              <div className="rpe" role="group" aria-label="Esfuerzo percibido">
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => <button key={n} aria-pressed={rpe === n} onClick={() => setRpe(n)}>{n}</button>)}
+              </div>
+              <p className="ter">1 muy suave · 5 exigente · 10 máximo</p>
             </div>
-            <p className="ter" style={{ margin: 0 }}>1 muy suave · 5 exigente · 10 máximo</p>
-            <label className="campo">Nota (opcional)<textarea value={nota} onChange={(x) => setNota(x.target.value)} placeholder="¿Qué ha funcionado? ¿Qué cambiarías?" /></label>
-            <button className="btn primario grande ancho" onClick={cerrarSesion}><Icono n="check" /> Cerrar sesión</button>
+            <div className="caja">
+              <label className="campo">Nota (opcional)<textarea value={nota} onChange={(x) => setNota(x.target.value)} placeholder="¿Qué ha funcionado? ¿Qué cambiarías?" /></label>
+            </div>
+            <button className="btn amarillo grande ancho" onClick={cerrarSesion}><Icono n="check" /> Cerrar sesión</button>
           </div>
         ) : null}
 
         {paso === 'resumen' ? (
-          <div className="pila" style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center' }}>
-            <Icono n="check" t={56} />
-            <h1>Sesión cerrada</h1>
-            <div className="datos-ficha" style={{ textAlign: 'left' }}>
-              <div><b>{presentes}</b><span>presentes</span></div>
-              <div><b>{duracionTotal(s.bloques)}′</b><span>duración</span></div>
-              <div><b>{cargaReal(duracionTotal(s.bloques), rpe ?? 0)}</b><span>carga (UA)</span></div>
+          <div className="pila" style={{ maxWidth: 560, margin: '0 auto' }}>
+            <div className="hero">
+              <div className="hero-txt"><strong style={{ fontSize: '1.5em', fontFamily: 'var(--f-titulo)' }}>Sesión cerrada</strong><span>Queda guardada en tu historial{navigator.onLine ? '' : ' y se subirá en cuanto haya señal'}.</span></div>
+              <div className="hero-num"><Icono n="check" t={56} /></div>
             </div>
-            <p className="sec">Queda guardada en tu historial{navigator.onLine ? '' : ' y se subirá en cuanto haya señal'}.</p>
-            <button className="btn primario grande" onClick={() => ir({ n: 'inicio' })}>Terminar</button>
+            <div className="caja">
+              <div className="datos-t">
+                <Dato etiqueta="Presentes" valor={presentes} extra={`de ${plantilla.length}`} />
+                <Dato etiqueta="Duración" valor={`${duracionTotal(s.bloques)}′`} />
+                <Dato etiqueta="Carga" valor={cargaReal(duracionTotal(s.bloques), rpe ?? 0)} extra="UA" />
+              </div>
+            </div>
+            <button className="btn amarillo grande ancho" onClick={() => ir({ n: 'inicio' })}>Terminar</button>
           </div>
         ) : null}
       </main>
 
       {paso !== 'resumen' ? (
-        <footer>
+        <footer><div className="pie-fijo">
           <button className="btn grande" disabled={paso === 'asistencia'} onClick={() => setPaso(paso === 'cierre' ? (bloques.length ? bloques.length - 1 : 'asistencia') : typeof paso === 'number' && paso > 0 ? paso - 1 : 'asistencia')}><Icono n="atras" /> Anterior</button>
           {paso === 'asistencia' ? (
             <button className="btn primario grande" onClick={confirmarLista}>Lista hecha <Icono n="adelante" /></button>
           ) : paso === 'cierre' ? (
-            <span />
+            null
           ) : (
             <button className="btn primario grande" onClick={() => setPaso((paso as number) < bloques.length - 1 ? (paso as number) + 1 : 'cierre')}>{(paso as number) < bloques.length - 1 ? 'Siguiente' : 'Cerrar sesión'} <Icono n="siguiente" /></button>
           )}
-        </footer>
+        </div></footer>
       ) : null}
     </div>
   )

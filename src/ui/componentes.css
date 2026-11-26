@@ -1,0 +1,214 @@
+/* ═══════════ Componentes comunes copiados de FutbolLab Jugadores ═══════════
+   Cabecera, botón redondo, sección, dato, listas, menú de acciones, tarjeta de césped,
+   modo campo claro (como la evaluación rápida), plantilla, planes y ficha. */
+
+/* Cabecera: botón redondo de volver, título grande y acciones redondas */
+.cabecera { display: flex; align-items: center; gap: 12px; padding: 18px 0 14px; }
+.cabecera-txt { flex: 1; min-width: 0; }
+.cabecera h1 { font-size: clamp(1.8em, 7vw, 2.4em); line-height: 1.02; overflow-wrap: anywhere; }
+.cabecera .sub { margin: 4px 0 0; color: var(--text-2); font-size: 0.95em; }
+.cabecera-acciones { display: flex; flex: none; gap: 8px; }
+
+/* Botón redondo blanco con sombra (el verde es la acción principal) */
+.redondo { flex: none; width: 48px; height: 48px; border-radius: 50%; display: inline-grid; place-items: center; border: 1px solid var(--line); background: var(--surface); color: var(--text); box-shadow: var(--sombra); cursor: pointer; text-decoration: none; transition: background var(--anim), transform 80ms; }
+.redondo:hover { background: var(--surface-2); }
+.redondo:active { transform: scale(0.96); }
+.redondo:disabled { opacity: 0.4; cursor: not-allowed; }
+.redondo.primario { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 20px -10px rgb(31 111 58 / 0.7); }
+.redondo.primario:hover { background: color-mix(in srgb, var(--accent) 88%, #000); }
+.redondo.activo { color: #C99A00; }
+html[data-campo='si'] .redondo { width: 56px; height: 56px; }
+.redondo-con-texto { display: grid; justify-items: center; gap: 6px; font-size: 0.78em; font-weight: 600; color: var(--text-2); text-align: center; }
+.fila-redondos { display: flex; gap: 14px 6px; justify-content: space-between; flex-wrap: wrap; }
+.fila-redondos > * { flex: 1 0 64px; }
+
+/* Sección: bloque blanco con el título dentro */
+.caja { background: var(--surface); border-radius: var(--r-lg); padding: 20px; margin: 14px 0; box-shadow: var(--sombra); display: grid; gap: 14px; align-content: start; min-width: 0; }
+html[data-tema='oscuro'] .caja { border: 1px solid var(--line); }
+.caja-cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.caja-cab h2 { font-size: 1.2em; font-weight: 800; letter-spacing: -0.02em; }
+.caja-cab a { color: var(--accent-2); font-weight: 600; text-decoration: none; }
+.caja h3, .sub-t { margin: 4px 0 -6px; font-family: var(--f-texto); font-size: 0.78em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); }
+.caja p { margin: 0; }
+.caja ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.dos-col > .caja { margin: 0; }
+.dos-col > div > .caja:first-child { margin-top: 0; }
+
+/* Dato: ficha gris con etiqueta arriba y número grande */
+.datos-t { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 130px), 1fr)); gap: 10px; }
+.dato-t { display: grid; gap: 2px; align-content: start; padding: 14px 16px; border-radius: var(--r); background: var(--surface-2); }
+.dato-et { font-size: 0.85em; color: var(--text-2); }
+.dato-val { font-family: var(--f-titulo); font-size: 1.75em; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+.dato-extra { font-size: 0.82em; color: var(--text-3); }
+
+/* Filas de lista separadas por líneas finas (sin cajas dentro de cajas) */
+.lista { display: grid; }
+.fila-lista { display: flex; align-items: center; gap: 12px; padding: 12px 0; border: 0; border-bottom: 1px solid var(--line); background: none; color: inherit; text-decoration: none; text-align: left; width: 100%; font: inherit; min-height: 56px; cursor: default; }
+a.fila-lista, button.fila-lista { cursor: pointer; }
+.lista > .fila-lista:last-child, .caja > .fila-lista:last-child { border-bottom: 0; padding-bottom: 0; }
+.fl-izq { flex: none; display: grid; place-items: center; }
+.fl-txt { flex: 1; min-width: 0; display: grid; gap: 1px; }
+.fl-txt strong { font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.fl-txt .sec { font-size: 0.88em; }
+.fl-der { flex: none; display: flex; align-items: center; gap: 6px; color: var(--text-3); }
+.icono-cuadro { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--surface-2); color: var(--accent-2); }
+
+/* Menú de acciones (hoja "Más") */
+.lista-menu { display: grid; }
+.lista-menu a, .lista-menu button { display: flex; align-items: center; gap: 14px; min-height: 56px; padding: 0 4px; border: 0; border-bottom: 1px solid var(--line); background: none; color: var(--text); font: inherit; font-weight: 600; text-decoration: none; text-align: left; cursor: pointer; }
+.lista-menu > :last-child { border-bottom: 0; }
+.lista-menu svg { color: var(--text-2); }
+.lista-menu .peligro, .lista-menu .peligro svg { color: var(--danger); }
+
+/* Botones de pie: "Cerrar sesión" en rojo con borde, como en Jugadores */
+.btn.peligro-borde { border-color: color-mix(in srgb, var(--danger) 55%, transparent); color: var(--danger); background: var(--surface); }
+.enlace-peligro { display: block; margin: 14px auto 0; color: var(--danger); font-weight: 600; background: none; border: 0; cursor: pointer; font-size: 0.92em; text-decoration: underline; }
+.pie-app { text-align: center; color: var(--text-3); font-size: 0.85em; margin: 10px 0 0; }
+
+/* Pestañas (segmentado): la elegida en blanco con sombra, como "Resumen" en Jugadores */
+.segmentado button[aria-pressed='true'] { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgb(16 32 24 / 0.12); }
+html[data-tema='oscuro'] .segmentado button[aria-pressed='true'] { background: var(--surface-2); }
+.acceso .segmentado button[aria-pressed='true'] { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
+.segmentado.lleno { display: flex; width: 100%; }
+.segmentado.lleno button { flex: 1; }
+
+/* Tarjeta de césped (hero), como la de la ficha del jugador */
+.hero { position: relative; overflow: hidden; display: flex; align-items: center; gap: 16px; padding: 22px; border-radius: var(--r-lg); color: #fff; background: repeating-linear-gradient(90deg, var(--cesped-1) 0 48px, var(--cesped-2) 48px 96px); box-shadow: var(--sombra); }
+.hero::after { content: ''; position: absolute; right: -70px; top: 50%; width: 230px; height: 230px; border: 2px solid rgb(255 255 255 / 0.22); border-radius: 50%; transform: translateY(-50%); pointer-events: none; }
+.hero-txt { flex: 1; min-width: 0; display: grid; gap: 6px; color: #DDEFE2; position: relative; z-index: 1; }
+.hero-txt strong { color: #fff; }
+.hero-num { position: relative; z-index: 1; text-align: right; display: grid; justify-items: end; gap: 2px; flex: none; }
+.hero-num b { font-family: var(--f-titulo); font-size: 3.2em; font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; color: #fff; }
+.hero-num span { font-size: 0.85em; color: #DDEFE2; }
+.chip-blanco { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 4px 12px; border-radius: 999px; background: #fff; color: var(--cesped-1); font-weight: 700; font-size: 0.85em; }
+.chip-blanco.aviso { color: #6B4E00; }
+.hero .duracion .barra { background: rgb(255 255 255 / 0.22); }
+
+/* Pie con la acción principal (como "Guardar evaluación") */
+.pie-fijo { position: sticky; bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 15; margin: 16px -6px 0; padding: 10px; border-radius: 26px; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(8px); box-shadow: 0 10px 30px -12px rgb(16 32 24 / 0.35); display: flex; gap: 10px; align-items: center; }
+.pie-fijo .btn.grande { flex: 1; }
+@media (min-width: 1024px) { .pie-fijo { bottom: 16px; } }
+.btn.amarillo { background: var(--amarillo); border-color: var(--amarillo); color: var(--tinta); box-shadow: 0 8px 20px -10px rgb(138 97 0 / 0.6); }
+.btn.amarillo:hover:not(:disabled) { background: #F5CD50; }
+
+/* ═══════════ Modo campo, como la evaluación rápida de Jugadores: claro y grande ═══════════ */
+html[data-campo='si'] { --bg: #EEF2EE; --bg-2: #E3EAE4; --surface: #FFFFFF; --surface-2: #F1F5F1; --surface-3: #DFE8E1; --text: #102018; --text-2: #3E4F45; --text-3: #4C5D53; --line: rgb(16 32 24 / 0.10); --line-2: rgb(16 32 24 / 0.2); --accent: #1F6F3A; --accent-2: #1F7A3C; --accent-ink: #FFFFFF; --amber: #8A6100; --sombra: 0 1px 2px rgb(16 32 24 / 0.05), 0 8px 24px -12px rgb(16 32 24 / 0.16); color-scheme: light; }
+html[data-campo='si'][data-tema='oscuro'] { --bg: #0C1A12; --bg-2: #08130D; --surface: #13241A; --surface-2: #1A2F22; --surface-3: #24402E; --text: #FFFFFF; --text-2: #C9D8CE; --text-3: #A8BDB0; --line: rgb(230 242 234 / 0.12); --accent: #6CC58A; --accent-2: #7BD08A; --accent-ink: #0C1A12; --amber: #F2C230; --sombra: none; color-scheme: dark; }
+.campo-pantalla { background: var(--bg); grid-template-rows: auto 1fr auto; }
+.campo-pantalla > header { display: block; border-bottom: 0; padding: 0 16px; padding-top: env(safe-area-inset-top); max-width: 1100px; width: 100%; margin: 0 auto; }
+.campo-pantalla > header .cabecera h1 { font-size: 1.7em; }
+.campo-pantalla main { padding: 4px 16px 16px; max-width: 1100px; width: 100%; margin: 0 auto; }
+.campo-pantalla > footer { position: sticky; bottom: 0; display: flex; gap: 10px; border-top: 0; padding: 10px 16px calc(14px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--bg) 30%); max-width: 760px; width: 100%; margin: 0 auto; }
+.campo-pantalla > footer .btn { flex: 1; }
+.campo-pantalla > footer .btn.primario { flex: 2; }
+
+/* Asistencia: fichas como en la evaluación rápida (dorsal en un cuadrado verde y un check) */
+.lista-asistencia { grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)); gap: 10px; }
+.jug { display: flex; justify-items: start; align-items: center; gap: 10px; text-align: left; min-height: 72px; padding: 10px 12px; border-radius: 18px; border: 1.5px solid var(--line-2); background: var(--surface); box-shadow: none; color: var(--text); }
+.jug b { flex: none; width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; font-family: var(--f-titulo); font-size: 1.25em; font-weight: 800; background: var(--surface-2); color: var(--text); }
+.jug .jug-txt { flex: 1; min-width: 0; display: grid; }
+.jug span { font-weight: 600; font-size: 0.98em; color: var(--text); }
+.jug small { font-size: 0.74em; text-transform: none; letter-spacing: 0; font-weight: 700; color: var(--text-3); }
+.jug .check { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--line-2); display: grid; place-items: center; color: transparent; }
+.jug.presente { border-color: color-mix(in srgb, var(--accent) 55%, transparent); background: var(--accent-soft); opacity: 1; }
+.jug.presente b { background: var(--accent); color: var(--accent-ink); }
+.jug.presente small { color: var(--accent-2); }
+.jug.presente .check { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.jug.ausente { opacity: 0.75; border-style: dashed; }
+.jug.justificado small, .jug.no_disponible small { color: var(--amber); }
+.recuento { display: inline-flex; padding: 4px 12px; border-radius: 999px; background: var(--surface-3); font-weight: 700; font-size: 0.9em; }
+
+/* Cronómetro: tarjeta de césped con el tiempo en blanco */
+.crono { padding: 22px 18px; border-radius: var(--r-lg); color: #fff; background: repeating-linear-gradient(90deg, var(--cesped-1) 0 48px, var(--cesped-2) 48px 96px); box-shadow: var(--sombra); border: 0; }
+.crono .sec { color: #DDEFE2; }
+.crono .tiempo { color: #fff; }
+.crono .tiempo.descanso { color: #BFE3FF; }
+.crono .tiempo.aviso { color: var(--amarillo); }
+.crono .btn { background: rgb(255 255 255 / 0.14); border-color: rgb(255 255 255 / 0.3); color: #fff; box-shadow: none; }
+.crono .btn.primario { background: var(--amarillo); border-color: var(--amarillo); color: var(--tinta); }
+.rpe button { border-radius: 14px; background: var(--surface); box-shadow: var(--sombra); border-color: transparent; }
+.rpe button[aria-pressed='true'] { background: var(--tinta); color: #fff; }
+
+/* Notas: fichas grises dentro de la sección */
+.nota-t { padding: 12px 14px; border-radius: var(--r); background: var(--surface-2); display: grid; gap: 6px; }
+
+/* Plantilla en Perfil: dorsal, nombre, posición, disponible y quitar en una fila limpia */
+.plantilla-fila { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: 'dorsal nombre quitar' 'dorsal pos disp'; gap: 6px 10px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.plantilla-fila:last-child { border-bottom: 0; }
+.plantilla-fila .p-dorsal { grid-area: dorsal; width: 56px; height: 56px; min-height: 56px; padding: 0; text-align: center; font-family: var(--f-titulo); font-size: 1.3em; font-weight: 800; border-radius: 14px; background: var(--accent); color: var(--accent-ink); border-color: transparent; -moz-appearance: textfield; }
+.plantilla-fila .p-dorsal::-webkit-inner-spin-button { appearance: none; }
+.plantilla-fila .p-nombre { grid-area: nombre; min-height: 40px; }
+.plantilla-fila .p-pos { grid-area: pos; min-height: 38px; padding: 4px 10px; font-size: 0.9em; }
+.plantilla-fila .p-disp { grid-area: disp; justify-self: end; }
+.plantilla-fila .p-quitar { grid-area: quitar; }
+.plantilla-fila.baja .p-dorsal { background: var(--surface-3); color: var(--text-2); }
+@media (min-width: 700px) {
+  .plantilla-fila { grid-template-columns: 56px minmax(0, 1fr) 150px auto auto; grid-template-areas: 'dorsal nombre pos disp quitar'; }
+}
+.interruptor { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85em; font-weight: 600; color: var(--text-2); cursor: pointer; }
+.interruptor input { appearance: none; width: 44px; height: 26px; border-radius: 999px; background: var(--surface-3); position: relative; cursor: pointer; transition: background var(--anim); margin: 0; flex: none; }
+.interruptor input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 0.25); transition: transform var(--anim); }
+.interruptor input:checked { background: var(--accent); }
+.interruptor input:checked::after { transform: translateX(18px); }
+
+/* Perfil: tarjeta de la cuenta con la foto por defecto */
+.perfil-cab { display: flex; align-items: center; gap: 16px; }
+.perfil-cab strong { display: block; font-family: var(--f-titulo); font-size: 1.35em; font-weight: 800; letter-spacing: -0.02em; }
+.avatar-futbol { flex: none; border-radius: 50%; }
+
+/* Planes: dos tarjetas, la Pro en césped */
+.planes { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.plan { display: grid; gap: 14px; align-content: start; padding: 22px; border-radius: var(--r-lg); background: var(--surface); box-shadow: var(--sombra); }
+.plan h2 { font-size: 1.5em; font-weight: 800; }
+.plan .precio { font-family: var(--f-titulo); font-size: 2.2em; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.plan .precio small { font-size: 0.4em; font-weight: 600; color: var(--text-2); letter-spacing: 0; }
+.plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.plan li { display: flex; gap: 10px; align-items: flex-start; }
+.plan li svg { flex: none; color: var(--accent-2); margin-top: 1px; }
+.plan.pro { color: #fff; background: repeating-linear-gradient(90deg, var(--cesped-1) 0 48px, var(--cesped-2) 48px 96px); }
+.plan.pro .precio small, .plan.pro .sec { color: #DDEFE2; }
+.plan.pro li svg { color: var(--amarillo); }
+.plan.pro .btn:not(.amarillo) { background: rgb(255 255 255 / 0.14); border-color: rgb(255 255 255 / 0.35); color: #fff; box-shadow: none; }
+
+/* Ficha del ejercicio */
+.ficha-pizarra { border-radius: var(--r-lg); overflow: hidden; background: var(--surface); box-shadow: var(--sombra); padding: 10px; }
+.ficha-pizarra .pizarra-mando { margin: 10px 2px 2px; }
+.estrellas { display: flex; gap: 6px; }
+.estrellas button { width: 44px; height: 44px; border: 0; background: var(--surface-2); border-radius: 12px; display: grid; place-items: center; cursor: pointer; color: var(--text-3); }
+.estrellas button.on { color: #C99A00; background: var(--amber-soft); }
+.etiquetas { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Constructor */
+.bloque-ses > header h2 { font-size: 1.15em; font-weight: 800; }
+.bloque-ses .btn.fantasma { color: var(--accent-2); font-weight: 700; }
+.item-ses .titulo-item { font-weight: 700; }
+.fila-campos { display: grid; grid-template-columns: 1fr 130px; gap: 12px; }
+.campo-pantalla > footer { background: none; }
+.campo-pantalla > footer .pie-fijo { position: static; margin: 0; width: 100%; }
+.campo-pantalla > footer .pie-fijo .btn { flex: 1; }
+.campo-pantalla > footer .pie-fijo .btn.primario { flex: 2; }
+
+/* Mis sesiones: filas dentro de la sección, con la fecha en una ficha gris (como "Actividad reciente") */
+.caja .fila-ses { background: none; box-shadow: none; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 12px 0; grid-template-columns: 60px 1fr auto; }
+.caja .fila-ses:last-child { border-bottom: 0; padding-bottom: 0; }
+.caja .fila-ses .fecha { background: var(--surface-2); border-radius: 14px; padding: 8px 0; }
+.caja .fila-ses .fecha b { font-size: 1.6em; font-weight: 800; }
+.caja .fila-ses .fecha small { font-size: 0.72em; }
+.caja .fila-ses strong { font-weight: 700; }
+.caja > .chips { flex-wrap: wrap; }
+
+/* Ajustes tras revisar capturas */
+.fila-redondos { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.jug b { width: 40px; height: 40px; font-size: 1.1em; }
+.jug span { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; line-height: 1.15; }
+.jug small { white-space: normal; }
+.campo-pantalla > footer .pie-fijo .btn:disabled { display: none; }
+.hero + .dos-col, .hero + .caja { margin-top: 14px; }
+.cabecera + .hero { margin-top: 2px; }
+
+/* La pizarra vertical no pasa del 68 % de la pantalla (ficha y modo campo) */
+.ficha-pizarra .pizarra { max-height: 68vh; width: auto; max-width: 100%; margin: 0 auto; }
+/* Plantilla: siempre en dos líneas, para que el nombre nunca se aplaste */
+@media (min-width: 700px) { .plantilla-fila { grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "dorsal nombre quitar" "dorsal pos disp"; } }
+.plantilla-fila .p-pos { width: auto; max-width: 170px; }
+.campo-pantalla main { padding-bottom: 28px; }

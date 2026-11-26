@@ -8,7 +8,7 @@ import { puedeGuardarSesion } from '../../logic/planes'
 import { hoy, sumarDias, uuid } from '../../logic/id'
 import { filtrar, FILTROS_VACIOS } from '../../logic/filtros'
 import { mover, ORDEN_BLOQUES } from '../../logic/bloques'
-import { Hoja, Paso, Vacio, fechaLarga, Intensidad } from '../../ui/base'
+import { Cabecera, Hoja, MenuAcciones, Paso, Redondo, Seccion, Vacio, fechaLarga, Intensidad } from '../../ui/base'
 import { Icono } from '../../ui/Icono'
 import { Pizarra } from '../pizarra/Pizarra'
 import { TarjetaEjercicio, edadEquipo, useBiblioteca } from '../biblioteca/comun'
@@ -26,6 +26,7 @@ export function Constructor({ id }: { id: string }) {
   const [elegir, setElegir] = useState<TipoBloque | null>(null)
   const [asistente, setAsistente] = useState(false)
   const [historial, setHistorial] = useState(false)
+  const [menu, setMenu] = useState(false)
   const [q, setQ] = useState('')
   const [arrastre, setArrastre] = useState<{ id: string; x: number; y: number; destino: TipoBloque | null; indice: number } | null>(null)
   const [objetivoMin, setObjetivoMin] = useState(75)
@@ -119,37 +120,40 @@ export function Constructor({ id }: { id: string }) {
 
   return (
     <div>
-      <div className="fila entre">
-        <button className="btn fantasma" onClick={() => volver({ n: 'sesiones' })}><Icono n="atras" t={18} /> Sesiones</button>
-        <span className="ter">{s.estado === 'hecha' ? 'Hecha' : 'Guardado automático'}</span>
+      <Cabecera titulo={s.objetivo || 'Nueva sesión'} sub={`${fechaLarga(s.fecha)}${s.hora ? ` · ${s.hora}` : ''} · ${s.estado === 'hecha' ? 'hecha' : 'se guarda sola'}`} atras={() => volver({ n: 'sesiones' })}>
+        <Redondo icono="chispa" etiqueta="Asistente de sesión" onClick={() => setAsistente(true)} />
+        <Redondo icono="menu" etiqueta="Más opciones" onClick={() => setMenu(true)} />
+      </Cabecera>
+
+      <div className="hero">
+        <div className="hero-txt">
+          <strong style={{ fontSize: '1.1em' }}>{eq.nombre}</strong>
+          <span>{s.bloques.length} ejercicio{s.bloques.length === 1 ? '' : 's'} · {disponibles} disponibles</span>
+          <span className={`chip-blanco${total > objetivoMin ? ' aviso' : ''}`}>{total > objetivoMin ? `Te pasas ${total - objetivoMin}′` : `Carga ${nivelCarga(carga)} · ${carga} UA`}</span>
+        </div>
+        <div className="hero-num"><b className="num">{total}′</b><span>de {objetivoMin}′ previstos</span></div>
       </div>
 
-      <div className="dos-col" style={{ marginTop: 8 }}>
-        <div className="pila">
-          <label className="campo">Objetivo de la sesión
-            <input value={s.objetivo} onChange={(e) => guardar({ objetivo: e.target.value })} placeholder="¿Qué vais a trabajar?" list="principios" style={{ fontSize: '1.15em' }} />
+      <div className="dos-col">
+        <Seccion titulo="La sesión">
+          <label className="campo">Objetivo
+            <input value={s.objetivo} onChange={(e) => guardar({ objetivo: e.target.value })} placeholder="¿Qué vais a trabajar?" list="principios" />
             <datalist id="principios">{PRINCIPIOS.map((p) => <option key={p} value={p} />)}</datalist>
           </label>
-          <div className="fila">
-            <label className="campo" style={{ flex: 1 }}>Fecha<input type="date" value={s.fecha} onChange={(e) => e.target.value && guardar({ fecha: e.target.value })} /></label>
-            <label className="campo" style={{ width: 130 }}>Hora<input type="time" value={s.hora ?? ''} onChange={(e) => guardar({ hora: e.target.value || null })} /></label>
+          <div className="fila-campos">
+            <label className="campo">Fecha<input type="date" value={s.fecha} onChange={(e) => e.target.value && guardar({ fecha: e.target.value })} /></label>
+            <label className="campo">Hora<input type="time" value={s.hora ?? ''} onChange={(e) => guardar({ hora: e.target.value || null })} /></label>
           </div>
-        </div>
-        <div className="tarjeta pila">
+        </Seccion>
+        <Seccion titulo="Duración">
           <div className={`duracion${total > objetivoMin ? ' pasada' : ''}`}>
-            <div className="fila entre">
-              <span><b className="total num titulo" style={{ fontSize: '1.8em' }}>{total}′</b> <span className="ter">de</span></span>
-              <Paso etiqueta="minutos previstos" valor={objetivoMin} min={30} max={150} paso={5} sufijo="′" cambiar={setObjetivoMin} />
-            </div>
             <div className="barra" role="img" aria-label={`Duración ${total} de ${objetivoMin} minutos`}>
               {ORDEN.map((t) => { const m = duracionTotal(s.bloques.filter((b) => b.tipo === t)); return <i key={t} className={`b-${t}`} style={{ width: `${(m / Math.max(total, objetivoMin)) * 100}%` }} /> })}
             </div>
-            {total > objetivoMin ? <span className="ter" style={{ color: 'var(--amber)' }}>Te pasas {total - objetivoMin} minutos</span> : null}
           </div>
-          <div className="fila entre"><span className="sec">Carga estimada</span><strong className="num">{carga} UA · {nivelCarga(carga)}</strong></div>
-          <div className="fila entre"><span className="sec">Jugadores disponibles</span><strong className="num">{disponibles}</strong></div>
+          <div className="fila entre"><span className="sec">Minutos previstos</span><Paso etiqueta="minutos previstos" valor={objetivoMin} min={30} max={150} paso={5} sufijo="′" cambiar={setObjetivoMin} /></div>
           <button className="btn" onClick={() => setAsistente(true)}><Icono n="chispa" t={18} /> Proponme una sesión</button>
-        </div>
+        </Seccion>
       </div>
 
       <div className="pila bloque">
@@ -187,20 +191,25 @@ export function Constructor({ id }: { id: string }) {
         })}
       </div>
 
-      <div className="acciones bloque">
-        <a className="btn primario grande" href={href({ n: 'campo', id: s.id })}><Icono n="silbato" /> Empezar entrenamiento</a>
-        <button className="btn" onClick={pdf}><Icono n="pdf" t={18} /> PDF</button>
-        <a className="btn" href={enlaceWhatsApp(resumen)} target="_blank" rel="noopener"><Icono n="whatsapp" t={18} /> WhatsApp</a>
-        <button className="btn" onClick={async () => {
+      <div className="pie-fijo">
+        <a className="btn amarillo grande" href={href({ n: 'campo', id: s.id })}><Icono n="silbato" /> Empezar entrenamiento</a>
+        <Redondo icono="pdf" etiqueta="PDF" onClick={pdf} />
+        <Redondo icono="whatsapp" etiqueta="Enviar por WhatsApp" href={enlaceWhatsApp(resumen)} nueva />
+      </div>
+
+      <MenuAcciones abierta={menu} cerrar={() => setMenu(false)} acciones={[
+        { icono: 'pdf', texto: 'Descargar PDF', hacer: () => void pdf() },
+        { icono: 'whatsapp', texto: 'Enviar por WhatsApp', href: enlaceWhatsApp(resumen), nueva: true },
+        { icono: 'copiar', texto: 'Duplicar para la semana siguiente', hacer: async () => {
           const b = puedeGuardarSesion(pro ? 'pro' : 'gratis', sesiones, usuario.id)
           if (b) return aviso(b.motivo, { texto: 'Ver Pro', hacer: () => ir({ n: 'planes' }) })
           const c = await repo.duplicar('sesiones', s.id, { fecha: sumarDias(s.fecha, 7), estado: 'planificada', bloques: s.bloques.map((x) => ({ ...x, id: uuid() })) })
           if (c) { aviso('Sesión duplicada para la semana siguiente'); ir({ n: 'sesion', id: c.id }) }
-        }}><Icono n="copiar" t={18} /> Duplicar</button>
-        <button className="btn" onClick={() => setHistorial(true)}><Icono n="historial" t={18} /> Historial</button>
-        <button className="btn" onClick={() => repo.archivar('sesiones', s.id, !s.archivado)}>{s.archivado ? 'Desarchivar' : 'Archivar'}</button>
-        <button className="btn peligro" onClick={async () => { await repo.papelera('sesiones', s.id); aviso('Sesión en la papelera (30 días)', { texto: 'Deshacer', hacer: () => void repo.restaurar('sesiones', s.id) }); ir({ n: 'sesiones' }) }}><Icono n="papelera" t={18} /> Papelera</button>
-      </div>
+        } },
+        { icono: 'historial', texto: 'Historial de cambios', hacer: () => setHistorial(true) },
+        { icono: 'archivar', texto: s.archivado ? 'Desarchivar' : 'Archivar', hacer: () => void repo.archivar('sesiones', s.id, !s.archivado) },
+        { icono: 'papelera', texto: 'Mover a la papelera', peligro: true, hacer: async () => { await repo.papelera('sesiones', s.id); aviso('Sesión en la papelera (30 días)', { texto: 'Deshacer', hacer: () => void repo.restaurar('sesiones', s.id) }); ir({ n: 'sesiones' }) } },
+      ]} />
 
       {arrastre ? <div className="fantasma-arrastre" style={{ left: arrastre.x, top: arrastre.y }}>{ejMap.get(s.bloques.find((b) => b.id === arrastre.id)?.ejercicioId ?? '')?.titulo}</div> : null}
 

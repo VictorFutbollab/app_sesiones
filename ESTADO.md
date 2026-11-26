@@ -36,6 +36,7 @@ Leyenda: **D** diseñada · **I** implementada · **P** probada (automático) ·
 6. Pago web con Stripe mientras sea PWA.
 7. 16 ejercicios de **demostración** marcados como tales (no 60 oficiales: deben escribirlos/revisarlos entrenadores reales).
 8. Asistencia por defecto "Está" y se toca a quien falta (patrón Spond): 16 jugadores en 1–3 toques.
+9. **Diseño "Césped" de FutbolLab Jugadores** (26 nov): tema claro por defecto, logo oficial, barra y navegación en verde casi negro (píldora flotante en móvil, menú lateral en ordenador), portada de césped a franjas en Inicio, acción estrella en amarillo, títulos en Bricolage Grotesque y entrada con la foto nocturna (CC0). Estilos en `src/ui/estilos.css` (tokens y estructura) y `src/ui/cesped.css` (aspecto). "Noche" sigue disponible en Perfil; el modo campo conserva su alto contraste oscuro.
 
 ## Pendiente (no se puede hacer desde aquí)
 

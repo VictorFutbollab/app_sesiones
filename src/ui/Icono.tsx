@@ -43,6 +43,10 @@ const P: Record<string, string> = {
   luna: 'M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z',
   historial: 'M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5M12 7v5l3 2',
   nota: 'M5 4h14v12l-4 4H5zM15 20v-4h4M8 9h8M8 13h5',
+  menu: 'M5 12h.01M12 12h.01M19 12h.01',
+  archivar: 'M3 4h18v4H3zM5 8v12h14V8M10 12h4',
+  salir: 'M9 21H5V3h4M16 17l5-5-5-5M21 12H9',
+  candado2: 'M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0',
 }
 export type NombreIcono = keyof typeof P | string
 

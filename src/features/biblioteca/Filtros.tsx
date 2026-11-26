@@ -7,7 +7,7 @@ import { Paso } from '../../ui/base'
 function Grupo({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
     <fieldset style={{ border: 0, padding: 0, margin: '0 0 16px' }}>
-      <legend className="sec" style={{ fontWeight: 700, fontSize: '0.85em', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>{titulo}</legend>
+      <legend className="sub-t" style={{ margin: '0 0 10px' }}>{titulo}</legend>
       <div className="fila" style={{ gap: 8 }}>{children}</div>
     </fieldset>
   )

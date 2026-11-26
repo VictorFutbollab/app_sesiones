@@ -2,6 +2,8 @@ import { useApp } from '../../app/estado'
 import { LIMITES, PRECIOS } from '../../logic/planes'
 import { MODO_DEMO, supabase } from '../../lib/supabase/cliente'
 import { Icono } from '../../ui/Icono'
+import { Cabecera } from '../../ui/base'
+import { volver } from '../../app/router'
 
 const FILAS: [string, string, string][] = [
   ['Ejercicios de la biblioteca', `${LIMITES.gratis.biblioteca} básicos`, 'Todos y novedades mensuales'],
@@ -29,20 +31,26 @@ export function Planes() {
   }
 
   return (
-    <div className="pila">
-      <h1>Planes</h1>
-      <table className="tabla tarjeta">
-        <thead><tr><th /><th>Gratis</th><th>Pro</th></tr></thead>
-        <tbody>{FILAS.map(([f, g, p]) => <tr key={f}><td>{f}</td><td>{g}</td><td className="si">{p}</td></tr>)}</tbody>
-      </table>
+    <div>
+      <Cabecera titulo="Planes" sub={pro ? 'Tienes Pro' : 'Estás en el plan Gratis'} atras={() => volver({ n: 'perfil' })} />
       {pro ? (
-        <div className="banda info"><Icono n="check" /> Tienes Pro{usuario.proHasta ? ` hasta el ${new Date(usuario.proHasta).toLocaleDateString('es-ES')}` : ''}.</div>
+        <div className="banda info" style={{ marginBottom: 14 }}><Icono n="check" /> Tienes Pro{usuario.proHasta ? ` hasta el ${new Date(usuario.proHasta).toLocaleDateString('es-ES')}` : ''}.</div>
       ) : null}
-      <div className="rejilla">
-        <button className="btn primario grande" onClick={() => pagar('mensual')}>{pro && MODO_DEMO ? 'Volver a Gratis (demostración)' : `Pro mensual · ${PRECIOS.mensual.toFixed(2).replace('.', ',')} €`}</button>
-        {!(pro && MODO_DEMO) ? <button className="btn grande" onClick={() => pagar('anual')}>Pro anual · {PRECIOS.anual.toFixed(2).replace('.', ',')} € <span className="ter">(ahorras un 33 %)</span></button> : null}
+      <div className="planes">
+        <section className="plan">
+          <div className="fila entre"><h2>Gratis</h2>{!pro ? <span className="recuento">Tu plan</span> : null}</div>
+          <div className="precio num">0 €<small> para siempre</small></div>
+          <ul>{FILAS.map(([f, g]) => <li key={f}><Icono n="check" t={18} /><span><strong>{f}:</strong> {g.toLowerCase()}</span></li>)}</ul>
+        </section>
+        <section className="plan pro">
+          <div className="fila entre"><h2>Pro</h2>{pro ? <span className="chip-blanco">Tu plan</span> : null}</div>
+          <div className="precio num">{PRECIOS.mensual.toFixed(2).replace('.', ',')} €<small> al mes</small></div>
+          <ul>{FILAS.map(([f, , p]) => <li key={f}><Icono n="check" t={18} /><span><strong>{f}:</strong> {p.toLowerCase()}</span></li>)}</ul>
+          <button className="btn amarillo grande ancho" onClick={() => pagar('mensual')}>{pro && MODO_DEMO ? 'Volver a Gratis (demostración)' : `Pro mensual · ${PRECIOS.mensual.toFixed(2).replace('.', ',')} €`}</button>
+          {!(pro && MODO_DEMO) ? <button className="btn grande ancho" onClick={() => pagar('anual')}>Pro anual · {PRECIOS.anual.toFixed(2).replace('.', ',')} € (ahorras un 33 %)</button> : null}
+        </section>
       </div>
-      <p className="ter">{MODO_DEMO ? 'Modo demostración: no se cobra nada; Pro se activa solo en este dispositivo para que lo pruebes.' : 'Pago seguro con Stripe. Cancela cuando quieras desde el enlace del recibo.'}</p>
+      <p className="pie-app">{MODO_DEMO ? 'Modo demostración: no se cobra nada; Pro se activa solo en este dispositivo para que lo pruebes.' : 'Pago seguro con Stripe. Cancela cuando quieras desde el enlace del recibo.'}</p>
     </div>
   )
 }

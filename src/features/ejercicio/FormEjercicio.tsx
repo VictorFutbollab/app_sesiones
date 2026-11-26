@@ -4,7 +4,7 @@ import { ir, volver } from '../../app/router'
 import type { Ejercicio, FaseJuego, TipoTarea } from '../../model/sesiones'
 import { FASES, PRINCIPIOS, TECNICAS, TIPOS } from '../../data/taxonomia'
 import { EditorPizarra, pizarraVacia } from '../pizarra/Editor'
-import { Paso, Vacio } from '../../ui/base'
+import { Cabecera, Paso, Redondo, Seccion as Caja, Vacio } from '../../ui/base'
 import { Icono } from '../../ui/Icono'
 import { puedeCrearEjercicio } from '../../logic/planes'
 import { categoria } from '../../data/taxonomia'
@@ -22,7 +22,7 @@ function Lineas({ etiqueta, valor, cambiar, ayuda }: { etiqueta: string; valor: 
 }
 
 function Seccion({ titulo, children }: { titulo: string; children: ReactNode }) {
-  return <fieldset className="tarjeta pila" style={{ margin: '0 0 16px' }}><legend className="titulo" style={{ fontSize: '1.15em', padding: '0 6px' }}>{titulo}</legend>{children}</fieldset>
+  return <Caja titulo={titulo}>{children}</Caja>
 }
 
 export function FormEjercicio({ id }: { id: string }) {
@@ -74,12 +74,13 @@ export function FormEjercicio({ id }: { id: string }) {
 
   return (
     <div>
-      <div className="fila entre" style={{ marginBottom: 12 }}>
-        <button className="btn fantasma" onClick={() => volver({ n: 'biblioteca' })}><Icono n="atras" t={18} /> Volver</button>
-        <span className="ter" aria-live="polite">{creado.current ? (guardado === 'guardando' ? 'Guardando…' : guardado === 'si' ? 'Guardado' : '') : 'Sin guardar'}</span>
-        {creado.current ? <button className="btn primario" onClick={() => ir({ n: 'ejercicio', id: e.id })}>Ver ficha</button> : <button className="btn primario" onClick={crear}>Crear ejercicio</button>}
-      </div>
-      <label className="campo" style={{ marginBottom: 16 }}>Título<input value={e.titulo} onChange={(x) => set({ titulo: x.target.value })} placeholder="Ej.: Rondo 4 contra 2 con transición" style={{ fontSize: '1.2em' }} /></label>
+      <Cabecera titulo={e.titulo.trim() || 'Nuevo ejercicio'} sub={<span aria-live="polite">{creado.current ? (guardado === 'guardando' ? 'Guardando…' : 'Se guarda solo') : 'Aún sin guardar'}</span>} atras={() => volver({ n: 'biblioteca' })}>
+        {creado.current ? <Redondo primario icono="check" etiqueta="Ver ficha" onClick={() => ir({ n: 'ejercicio', id: e.id })} /> : null}
+      </Cabecera>
+      <Caja>
+        <label className="campo">Título<input value={e.titulo} onChange={(x) => set({ titulo: x.target.value })} placeholder="Ej.: Rondo 4 contra 2 con transición" /></label>
+        {!creado.current ? <button className="btn primario grande ancho" onClick={crear}><Icono n="check" /> Crear ejercicio</button> : null}
+      </Caja>
 
       <div className="dos-col">
         <Seccion titulo="Pizarra">

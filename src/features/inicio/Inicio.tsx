@@ -50,16 +50,45 @@ export function Inicio() {
   } : null
 
   const fechaProx = proximoEntreno(eq.dias)
+  const plantilla = (jugadores ?? []).filter((j) => j.equipoId === eq.id).length
+  // Semana actual (lunes a domingo): solo recuentos de datos que ya existen.
+  const [ya, ma, da] = hoy().split('-').map(Number)
+  const lunes = sumarDias(hoy(), -((new Date(ya, ma - 1, da).getDay() + 6) % 7))
+  const domingo = sumarDias(lunes, 6)
+  const semana = misSes.filter((s) => s.fecha >= lunes && s.fecha <= domingo)
+  const minutosSemana = semana.reduce((t, s) => t + duracionTotal(s.bloques), 0)
   return (
     <div>
-      <div className="saludo fila entre">
-        <div>
-          <p className="ter" style={{ margin: 0 }}>{fechaLarga(hoy())}</p>
-          <h1>Hola, {usuario.nombre.split(' ')[0]}</h1>
-        </div>
-      </div>
+      <header className="portada">
+        <svg className="portada-campo" viewBox="0 0 390 300" aria-hidden preserveAspectRatio="xMidYMin slice">
+          <circle cx="195" cy="0" r="92" />
+          <rect x="95" y="200" width="200" height="110" />
+          <rect x="150" y="260" width="90" height="50" />
+          <path d="M155 200 A45 45 0 0 1 235 200" />
+        </svg>
+        <p className="portada-fecha">Hola, {usuario.nombre.split(' ')[0]} · {fechaLarga(hoy()).toLowerCase()}</p>
+        <h1 className="portada-equipo">{eq.nombre}</h1>
+        <p className="portada-sub">{plantilla ? `${plantilla} jugadores · ${plantilla - disponibles === 0 ? 'todos disponibles' : `${plantilla - disponibles} no disponibles`}` : 'Añade tu plantilla en Perfil para pasar lista en el campo'}</p>
+      </header>
+      <dl className="indicadores">
+        <div><dt>Disponibles</dt><dd className="num">{disponibles}{plantilla ? <small>/{plantilla}</small> : null}</dd></div>
+        <div><dt>Sesiones esta semana</dt><dd className="num">{semana.length}</dd></div>
+        <div><dt>Minutos planificados</dt><dd className="num">{minutosSemana}</dd></div>
+      </dl>
 
-      <div className="buscador bloque" role="search">
+      {!proxima ? (
+        <a className="cta" href={href({ n: 'sesion', id: 'nueva' })} onClick={() => sessionStorage.setItem('fechaNueva', fechaProx)}>
+          <span className="cta-txt"><strong>Preparar sesión</strong><span className="sub">Próximo entreno: {fechaLarga(fechaProx).toLowerCase()}</span></span>
+          <span className="cta-mas" aria-hidden><Icono n="mas" t={28} /></span>
+        </a>
+      ) : (
+        <a className="cta" href={href({ n: 'campo', id: proxima.id })}>
+          <span className="cta-txt"><strong>Empezar entrenamiento</strong><span className="sub">{proxima.objetivo || 'Sesión'} · {duracionTotal(proxima.bloques)} min</span></span>
+          <span className="cta-mas" aria-hidden><Icono n="silbato" t={28} /></span>
+        </a>
+      )}
+
+      <div className="buscador bloque-suelto" role="search">
         <Icono n="buscar" />
         <input className="entrada" type="search" placeholder="Busca ejercicios o sesiones" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Búsqueda global" />
       </div>
@@ -73,7 +102,7 @@ export function Inicio() {
 
       <section className="bloque">
         {proxima ? (
-          <div className="proxima">
+          <div className="proxima tarjeta">
             <div className="fila entre">
               <div>
                 <p className="ter" style={{ margin: 0 }}>Próxima sesión · <span>{fechaLarga(proxima.fecha)}</span>{proxima.hora ? ` · ${proxima.hora}` : ''}</p>
@@ -90,19 +119,15 @@ export function Inicio() {
               {proxima.bloques.map((b) => <li key={b.id}>{nombreBloque(b.tipo)}: {ejMap.get(b.ejercicioId)?.titulo ?? '—'} <span className="ter">({b.minutos}′)</span></li>)}
             </ol>
             <div className="fila">
-              <a className="btn primario grande" href={href({ n: 'campo', id: proxima.id })}><Icono n="silbato" /> Empezar entrenamiento</a>
-              <a className="btn grande" href={href({ n: 'sesion', id: proxima.id })}>Revisar</a>
+              <a className="btn" href={href({ n: 'sesion', id: proxima.id })}><Icono n="editar" /> Revisar sesión</a>
             </div>
           </div>
         ) : (
-          <div className="proxima">
-            <p className="ter" style={{ margin: 0 }}>Próximo entreno: <span>{fechaLarga(fechaProx)}</span></p>
-            <h2 style={{ fontSize: '1.6em' }}>Aún no tienes sesión preparada</h2>
-            <div className="fila">
-              <a className="btn primario grande" href={`${href({ n: 'sesion', id: 'nueva' })}`} onClick={() => sessionStorage.setItem('fechaNueva', fechaProx)}><Icono n="mas" /> Preparar sesión</a>
-              <a className="btn grande" href={href({ n: 'sesion', id: 'nueva' })} onClick={() => { sessionStorage.setItem('fechaNueva', fechaProx); sessionStorage.setItem('abrirAsistente', '1') }}><Icono n="chispa" /> Proponme una</a>
-            </div>
-          </div>
+          <a className="tarjeta propuesta" href={href({ n: 'sesion', id: 'nueva' })} onClick={() => { sessionStorage.setItem('fechaNueva', fechaProx); sessionStorage.setItem('abrirAsistente', '1') }}>
+            <span className="propuesta-icono" aria-hidden><Icono n="chispa" t={22} /></span>
+            <span><strong>¿Sin tiempo? Te propongo una</strong><span className="sec">Aún no tienes sesión para el {fechaLarga(fechaProx).toLowerCase()}. La armo con tu edad y tu plantilla.</span></span>
+            <Icono n="adelante" />
+          </a>
         )}
       </section>
 

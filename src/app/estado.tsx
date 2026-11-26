@@ -72,7 +72,7 @@ export function Proveedor({ children, pantallaAcceso }: { children: ReactNode; p
   const [activo, setActivo] = useState<string | null>(null)
   const [sync, setSync] = useState<EstadoSync | null>(null)
   const [avisoTxt, setAviso] = useState<{ texto: string; accion?: { texto: string; hacer: () => void } } | null>(null)
-  const [tema, setTemaS] = useState<Tema>('oscuro')
+  const [tema, setTemaS] = useState<Tema>('claro')
   const [usos, setUsos] = useState(0)
   const motor = useRef<Motor | null>(null)
   const usuarioRef = useRef<string>('')
@@ -99,7 +99,7 @@ export function Proveedor({ children, pantallaAcceso }: { children: ReactNode; p
 
   useEffect(() => {
     document.documentElement.dataset.tema = tema
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', tema === 'oscuro' ? '#0F1A14' : '#F3F6F2')
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#102018')
   }, [tema])
 
   // Equipos (para el equipo activo)

@@ -35,6 +35,79 @@ export function Hoja({ titulo, abierta, cerrar, children, pie }: { titulo: React
   )
 }
 
+/* ═══ Patrones de FutbolLab Jugadores: cabecera, botón redondo, sección, dato y menú ═══ */
+
+/** Cabecera de pantalla: botón redondo de volver, título grande con subtítulo y acciones redondas. */
+export function Cabecera({ titulo, sub, atras, children }: { titulo: ReactNode; sub?: ReactNode; atras?: () => void; children?: ReactNode }) {
+  return (
+    <header className="cabecera">
+      {atras ? <button type="button" className="redondo" onClick={atras} aria-label="Volver"><Icono n="atras" /></button> : null}
+      <div className="cabecera-txt">
+        <h1>{titulo}</h1>
+        {sub ? <p className="sub">{sub}</p> : null}
+      </div>
+      {children ? <div className="cabecera-acciones">{children}</div> : null}
+    </header>
+  )
+}
+
+type PropsRedondo = { icono: string; etiqueta: string; onClick?: () => void; href?: string; activo?: boolean; primario?: boolean; texto?: boolean; nueva?: boolean; disabled?: boolean }
+/** Botón redondo blanco (o verde si es la acción principal). Con `texto`, la etiqueta va debajo. */
+export function Redondo({ icono, etiqueta, onClick, href, activo, primario, texto, nueva, disabled }: PropsRedondo) {
+  const cls = `redondo${primario ? ' primario' : ''}${activo ? ' activo' : ''}`
+  const cuerpo = <Icono n={icono} relleno={icono === 'estrella' && activo} />
+  const boton = href
+    ? <a className={cls} href={href} aria-label={etiqueta} title={etiqueta} {...(nueva ? { target: '_blank', rel: 'noopener' } : {})}>{cuerpo}</a>
+    : <button type="button" className={cls} onClick={onClick} aria-label={etiqueta} title={etiqueta} aria-pressed={activo === undefined ? undefined : activo} disabled={disabled}>{cuerpo}</button>
+  if (!texto) return boton
+  return <div className="redondo-con-texto">{boton}<span aria-hidden>{etiqueta}</span></div>
+}
+
+/** Bloque blanco con título dentro (las "secciones" de Jugadores). */
+export function Seccion({ titulo, extra, children, className = '', id }: { titulo?: ReactNode; extra?: ReactNode; children: ReactNode; className?: string; id?: string }) {
+  return (
+    <section className={`caja ${className}`} id={id}>
+      {titulo || extra ? <header className="caja-cab">{titulo ? <h2>{titulo}</h2> : <span />}{extra}</header> : null}
+      {children}
+    </section>
+  )
+}
+
+/** Ficha gris con etiqueta pequeña arriba y el número grande (bento de Jugadores). */
+export function Dato({ etiqueta, valor, extra }: { etiqueta: string; valor: ReactNode; extra?: ReactNode }) {
+  return (
+    <div className="dato-t">
+      <span className="dato-et">{etiqueta}</span>
+      <span className="dato-val num">{valor}</span>
+      {extra ? <span className="dato-extra">{extra}</span> : null}
+    </div>
+  )
+}
+
+export type AccionMenu = { icono: string; texto: string; hacer?: () => void; href?: string; peligro?: boolean; nueva?: boolean; oculta?: boolean }
+/** Lista de acciones secundarias en una hoja ("Más"), para no llenar la pantalla de botones. */
+export function MenuAcciones({ titulo = 'Más opciones', abierta, cerrar, acciones }: { titulo?: string; abierta: boolean; cerrar: () => void; acciones: AccionMenu[] }) {
+  return (
+    <Hoja titulo={titulo} abierta={abierta} cerrar={cerrar}>
+      <div className="lista-menu">
+        {acciones.filter((a) => !a.oculta).map((a) => a.href ? (
+          <a key={a.texto} className={a.peligro ? 'peligro' : ''} href={a.href} onClick={cerrar} {...(a.nueva ? { target: '_blank', rel: 'noopener' } : {})}><Icono n={a.icono} /> {a.texto}</a>
+        ) : (
+          <button key={a.texto} type="button" className={a.peligro ? 'peligro' : ''} onClick={() => { cerrar(); a.hacer?.() }}><Icono n={a.icono} /> {a.texto}</button>
+        ))}
+      </div>
+    </Hoja>
+  )
+}
+
+/** Fila de lista dentro de una sección: icono o marca a la izquierda, texto y algo a la derecha. */
+export function FilaLista({ izq, titulo, sub, der, href, onClick }: { izq?: ReactNode; titulo: ReactNode; sub?: ReactNode; der?: ReactNode; href?: string; onClick?: () => void }) {
+  const cuerpo = <>{izq ? <span className="fl-izq">{izq}</span> : null}<span className="fl-txt"><strong>{titulo}</strong>{sub ? <span className="sec">{sub}</span> : null}</span>{der ? <span className="fl-der">{der}</span> : null}</>
+  if (href) return <a className="fila-lista" href={href}>{cuerpo}</a>
+  if (onClick) return <button type="button" className="fila-lista" onClick={onClick}>{cuerpo}</button>
+  return <div className="fila-lista">{cuerpo}</div>
+}
+
 export function Vacio({ icono = 'info', children }: { icono?: string; children: ReactNode }) {
   return (
     <div className="vacio">
@@ -62,9 +135,9 @@ export function Intensidad({ v }: { v: number }) {
   )
 }
 
-export function Segmentado<T extends string>({ opciones, valor, cambiar, etiqueta }: { opciones: [T, string][]; valor: T; cambiar: (v: T) => void; etiqueta: string }) {
+export function Segmentado<T extends string>({ opciones, valor, cambiar, etiqueta, lleno }: { opciones: [T, string][]; valor: T; cambiar: (v: T) => void; etiqueta: string; lleno?: boolean }) {
   return (
-    <div className="segmentado" role="group" aria-label={etiqueta}>
+    <div className={`segmentado${lleno ? ' lleno' : ''}`} role="group" aria-label={etiqueta}>
       {opciones.map(([v, t]) => (
         <button key={v} type="button" aria-pressed={v === valor} onClick={() => cambiar(v)}>{t}</button>
       ))}

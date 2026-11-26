@@ -1,5 +1,7 @@
 import { useApp, useTabla } from '../../app/estado'
-import { Vacio } from '../../ui/base'
+import { Cabecera, FilaLista, Seccion, Vacio } from '../../ui/base'
+import { Icono } from '../../ui/Icono'
+import { volver } from '../../app/router'
 
 const DIAS = 30
 const quedan = (e: string) => Math.max(0, DIAS - Math.floor((Date.now() - Date.parse(e)) / 864e5))
@@ -18,18 +20,16 @@ export function Papelera() {
     ...eqs.map((x) => ({ t: 'equipos' as const, id: x.id, nombre: x.nombre, tipo: 'Equipo', e: x.eliminadoEn! })),
   ].sort((a, b) => b.e.localeCompare(a.e))
   return (
-    <div className="pila">
-      <h1>Papelera</h1>
-      <p className="sec" style={{ margin: 0 }}>Lo que borras se guarda {DIAS} días por si te equivocas.</p>
-      {filas.length === 0 ? <Vacio icono="papelera"><p>La papelera está vacía.</p></Vacio> : filas.map((f) => (
-        <div key={f.id} className="tarjeta fila entre">
-          <div><strong>{f.nombre}</strong><br /><span className="ter">{f.tipo} · se borra en {quedan(f.e)} días</span></div>
-          <div className="fila">
-            <button className="btn" onClick={() => repo.restaurar(f.t, f.id)}>Recuperar</button>
-            <button className="btn peligro" onClick={() => confirm('¿Borrar para siempre?') && repo.purgar(f.t, f.id)}>Borrar ya</button>
-          </div>
-        </div>
-      ))}
+    <div>
+      <Cabecera titulo="Papelera" sub={`Lo que borras se guarda ${DIAS} días por si te equivocas`} atras={() => volver({ n: 'perfil' })} />
+      {filas.length === 0 ? <Seccion><Vacio icono="papelera"><p>La papelera está vacía.</p></Vacio></Seccion> : (
+        <Seccion titulo={`${filas.length} elemento${filas.length === 1 ? '' : 's'}`} className="lista">
+          {filas.map((f) => (
+            <FilaLista key={f.id} izq={<span className="icono-cuadro"><Icono n={f.t === 'sesiones' ? 'sesiones' : f.t === 'jugadores' || f.t === 'equipos' ? 'equipo' : 'biblioteca'} t={20} /></span>} titulo={f.nombre} sub={`${f.tipo} · se borra en ${quedan(f.e)} días`}
+              der={<><button className="btn" style={{ minHeight: 40 }} onClick={() => repo.restaurar(f.t, f.id)}>Recuperar</button><button className="btn-icono" aria-label={`Borrar ${f.nombre} para siempre`} style={{ color: 'var(--danger)' }} onClick={() => confirm('¿Borrar para siempre?') && repo.purgar(f.t, f.id)}><Icono n="papelera" t={18} /></button></>} />
+          ))}
+        </Seccion>
+      )}
     </div>
   )
 }

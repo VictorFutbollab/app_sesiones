@@ -5,10 +5,11 @@ import '@fontsource/inter/latin-400.css'
 import '@fontsource/inter/latin-500.css'
 import '@fontsource/inter/latin-600.css'
 import '@fontsource/inter/latin-700.css'
-import '@fontsource/barlow-condensed/latin-500.css'
-import '@fontsource/barlow-condensed/latin-600.css'
-import '@fontsource/barlow-condensed/latin-700.css'
+// Títulos: Bricolage Grotesque, la de futbollab.com y FutbolLab Jugadores
+import '@fontsource-variable/bricolage-grotesque/wght.css'
 import './ui/estilos.css'
+import './ui/cesped.css'
+import './ui/componentes.css'
 import { App } from './app/App'
 
 // Versión nueva publicada: el service worker nuevo toma el control y se recarga UNA vez

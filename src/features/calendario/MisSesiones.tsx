@@ -4,7 +4,7 @@ import { href } from '../../app/router'
 import { duracionTotal } from '../../logic/carga'
 import { hoy } from '../../logic/id'
 import { normalizar } from '../../logic/filtros'
-import { Segmentado, Vacio, diaSemana } from '../../ui/base'
+import { Cabecera, Redondo, Seccion, Segmentado, Vacio, diaSemana } from '../../ui/base'
 import { Icono } from '../../ui/Icono'
 import type { Sesion } from '../../model/sesiones'
 
@@ -63,20 +63,19 @@ export function MisSesiones() {
 
   return (
     <div>
-      <div className="fila entre">
-        <h1>Sesiones</h1>
-        <a className="btn primario" href={href({ n: 'sesion', id: 'nueva' })}><Icono n="mas" t={18} /> Nueva</a>
-      </div>
-      <div className="pila bloque">
-        <div className="fila entre">
-          <Segmentado etiqueta="Vista" valor={vista} cambiar={setVista} opciones={[['lista', 'Lista'], ['calendario', 'Calendario']]} />
-          <Segmentado etiqueta="Estado" valor={estado} cambiar={setEstado} opciones={[['todas', 'Todas'], ['planificada', 'Planificadas'], ['hecha', 'Hechas']]} />
-        </div>
+      <Cabecera titulo="Sesiones" sub={`${eq.nombre} · ${lista.length} sesi${lista.length === 1 ? 'ón' : 'ones'}`}>
+        <Redondo primario icono="mas" etiqueta="Nueva sesión" href={href({ n: 'sesion', id: 'nueva' })} />
+      </Cabecera>
+      <div className="pila">
+        <Segmentado lleno etiqueta="Vista" valor={vista} cambiar={setVista} opciones={[['lista', 'Lista'], ['calendario', 'Calendario']]} />
         <div className="buscador" role="search"><Icono n="buscar" /><input className="entrada" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca por objetivo o ejercicio" aria-label="Buscar sesiones" /></div>
+        <div className="chips" role="group" aria-label="Estado">
+          {([['todas', 'Todas'], ['planificada', 'Planificadas'], ['hecha', 'Hechas']] as const).map(([v, t]) => <button key={v} className="chip" aria-pressed={estado === v} onClick={() => setEstado(v)}>{t}</button>)}
+        </div>
       </div>
 
       {vista === 'calendario' ? (
-        <div className="tarjeta pila">
+        <div className="caja">
           <div className="fila entre">
             <button className="btn-icono" onClick={() => cambiarMes(-1)} aria-label="Mes anterior"><Icono n="atras" /></button>
             <strong className="titulo" style={{ fontSize: '1.3em', textTransform: 'capitalize' }}>{primero.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</strong>
@@ -106,12 +105,10 @@ export function MisSesiones() {
       ) : lista.length === 0 ? (
         <Vacio icono="sesiones"><p>{q ? `No hay sesiones con «${q}».` : 'Aún no tienes sesiones.'}</p><a className="btn primario" href={href({ n: 'sesion', id: 'nueva' })}>Preparar la primera</a></Vacio>
       ) : (
-        <div className="pila">
-          {proximas.length ? <h2>Próximas</h2> : null}
-          {proximas.map((s) => <Fila key={s.id} s={s} titulos={texto(s)} />)}
-          {pasadas.length ? <h2 style={{ marginTop: 12 }}>Historial</h2> : null}
-          {pasadas.map((s) => <Fila key={s.id} s={s} titulos={texto(s)} cerrada={cierreDe.get(s.id) ? `${OBJ[cierreDe.get(s.id)!.objetivoCumplido]} · esfuerzo ${cierreDe.get(s.id)!.rpe}/10` : undefined} />)}
-        </div>
+        <>
+          {proximas.length ? <Seccion titulo="Próximas" className="lista">{proximas.map((s) => <Fila key={s.id} s={s} titulos={texto(s)} />)}</Seccion> : null}
+          {pasadas.length ? <Seccion titulo="Historial" className="lista">{pasadas.map((s) => <Fila key={s.id} s={s} titulos={texto(s)} cerrada={cierreDe.get(s.id) ? `${OBJ[cierreDe.get(s.id)!.objetivoCumplido]} · esfuerzo ${cierreDe.get(s.id)!.rpe}/10` : undefined} />)}</Seccion> : null}
+        </>
       )}
     </div>
   )

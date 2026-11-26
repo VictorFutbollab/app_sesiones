@@ -73,7 +73,7 @@ export function Asistente({ abierta, cerrar, biblioteca, edad, jugadores, aplica
         <div className="pila">
           {res.p.avisos.map((a) => <div key={a} className="banda">{a}</div>)}
           {res.p.bloques.map((b) => (
-            <div key={b.tipo} className="tarjeta" style={{ padding: 12 }}>
+            <div key={b.tipo} className="nota-t">
               <div className="fila entre"><span className="etiqueta">{nombreBloque(b.tipo)}</span><span className="num sec">{b.minutos}′</span></div>
               <strong style={{ display: 'block', marginTop: 6 }}>{porId.get(b.ejercicioId)?.titulo}</strong>
               <span className="ter">{b.motivo}</span>

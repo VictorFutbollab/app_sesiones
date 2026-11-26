@@ -78,7 +78,7 @@ export function Notas({ sesionId = null, ejercicioId = null, grande = false }: {
   return (
     <div className="pila">
       {notas.sort((a, b) => b.creadoEn.localeCompare(a.creadoEn)).map((n) => (
-        <div key={n.id} className="tarjeta" style={{ padding: 12 }}>
+        <div key={n.id} className="nota-t">
           {n.texto ? <p style={{ margin: 0 }}>{n.texto}</p> : null}
           {n.audioId ? <Audio id={n.audioId} /> : null}
           <div className="fila entre"><span className="ter">{n.fecha}{n.audioId && !n.transcrita ? (pro ? ' · sin transcripción' : ' · transcripción con Pro') : ''}</span>

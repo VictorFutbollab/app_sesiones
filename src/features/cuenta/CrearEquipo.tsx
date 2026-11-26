@@ -4,7 +4,7 @@ import { CATEGORIAS, categoria } from '../../data/taxonomia'
 import type { Modalidad, Posicion } from '../../model/comun'
 import { crearEquipoEjemplo } from '../../data/demo'
 import { Paso } from '../../ui/base'
-import { Logo } from '../../ui/Icono'
+import { MarcoAcceso } from '../../ui/Marca'
 
 const DIAS = ['L', 'M', 'X', 'J', 'V', 'S', 'D']
 
@@ -41,10 +41,10 @@ export function CrearEquipo() {
   }
 
   return (
-    <main className="bienvenida">
-      <form className="tarjeta" onSubmit={crear}>
+    <MarcoAcceso lema="Último paso: tu equipo. Menos de un minuto.">
+      <form className="pila-form" onSubmit={crear}>
         <div className="progreso-pasos" aria-label="Paso 2 de 2"><i className="on" /><i className="on" /></div>
-        <div className="fila"><Logo t={32} /><h1>Hola, {usuario.nombre.split(' ')[0]}. Tu equipo</h1></div>
+        <h1>Hola, {usuario.nombre.split(' ')[0]}. Tu equipo</h1>
         <label className="campo">Categoría
           <select value={cat} onChange={(e) => { setCat(e.target.value); setModalidad(categoria(e.target.value).modalidad) }}>
             {CATEGORIAS.map((c) => <option key={c.id} value={c.id}>{c.nombre} ({c.edadMin}–{c.edadMax} años)</option>)}
@@ -71,6 +71,6 @@ export function CrearEquipo() {
         <button type="button" className="btn ancho" onClick={ejemplo} disabled={enviando}>Probar con un equipo de ejemplo</button>
         <p className="ter" style={{ margin: 0 }}>El equipo de ejemplo trae 16 jugadores ficticios y dos sesiones para que veas la app con datos. Puedes borrarlo cuando quieras.</p>
       </form>
-    </main>
+    </MarcoAcceso>
   )
 }
