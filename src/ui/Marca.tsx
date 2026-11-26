@@ -23,15 +23,15 @@ export function AvatarFutbol({ size = 40 }: { size?: number }) {
         <clipPath id={`${id}-b`}><circle cx="50" cy="56" r="21" /></clipPath>
       </defs>
       <g clipPath={`url(#${id}-c)`}>
-        <rect width="100" height="100" fill="#1f6f3a" />
-        {[0, 24, 48, 72, 96].map((x) => <rect key={x} x={x} y="0" width="12" height="100" fill="#237a40" />)}
+        <rect width="100" height="100" fill="#1E4F8C" />
+        {[0, 24, 48, 72, 96].map((x) => <rect key={x} x={x} y="0" width="12" height="100" fill="#22589A" />)}
         <g fill="none" stroke="#ffffff" strokeOpacity="0.4" strokeWidth="2"><line x1="0" y1="56" x2="100" y2="56" /><circle cx="50" cy="56" r="33" /></g>
         <ellipse cx="51" cy="79" rx="15" ry="3.2" fill="#000000" opacity="0.25" />
         <circle cx="50" cy="56" r="21" fill="#ffffff" />
-        <g clipPath={`url(#${id}-b)`} fill="#102018">
+        <g clipPath={`url(#${id}-b)`} fill="#0F2440">
           <polygon points={centro} />
           {fuera.map((p) => <polygon key={p} points={p} />)}
-          <g stroke="#102018" strokeWidth="1.4" strokeLinecap="round">{costuras.map(([x1, y1, x2, y2]) => <line key={`${x1}-${y1}`} x1={x1} y1={y1} x2={x2} y2={y2} />)}</g>
+          <g stroke="#0F2440" strokeWidth="1.4" strokeLinecap="round">{costuras.map(([x1, y1, x2, y2]) => <line key={`${x1}-${y1}`} x1={x1} y1={y1} x2={x2} y2={y2} />)}</g>
         </g>
       </g>
     </svg>
@@ -42,7 +42,28 @@ export function AvatarFutbol({ size = 40 }: { size?: number }) {
 export function MarcoAcceso({ children, lema = 'La sesión de mañana, lista en 5 minutos.' }: { children: ReactNode; lema?: string }) {
   return (
     <div className="acceso">
-      <div className="acceso-campo" aria-hidden />
+      <div className="acceso-campo" aria-hidden>
+        {/* Pizarra táctica con medio campo y una jugada en tiza (Jugadores usa una foto; Sesiones, la pizarra) */}
+        <svg className="acceso-jugada" viewBox="0 0 400 520" preserveAspectRatio="xMidYMid meet">
+          <defs><marker id="acceso-punta" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#D6E3F3" /></marker></defs>
+          <g className="lineas">
+            <rect x="20" y="20" width="360" height="480" rx="4" />
+            <line x1="20" y1="500" x2="380" y2="500" />
+            <rect x="110" y="20" width="180" height="90" />
+            <rect x="160" y="20" width="80" height="34" />
+            <path d="M160 110 A40 40 0 0 0 240 110" />
+            <path d="M140 500 A60 60 0 0 1 260 500" />
+          </g>
+          <g className="jugada" transform="translate(0 110)">
+            <circle cx="90" cy="360" r="12" /><circle cx="200" cy="300" r="12" /><circle cx="310" cy="380" r="12" /><circle cx="250" cy="190" r="12" />
+            <path d="M102 352 C140 330 165 315 186 306" strokeDasharray="8 8" markerEnd="url(#acceso-punta)" />
+            <path d="M208 288 L242 204" markerEnd="url(#acceso-punta)" />
+            <path d="M300 368 C290 300 280 250 262 206" strokeDasharray="8 8" markerEnd="url(#acceso-punta)" />
+            <path d="M150 240 l12 12 M162 240 l-12 12 M300 250 l12 12 M312 250 l-12 12" className="rival" />
+            <path d="M60 440 l10 18 h-20 z M340 440 l10 18 h-20 z" className="cono" />
+          </g>
+        </svg>
+      </div>
       <div className="acceso-caja">
         <div className="acceso-marca">
           <Marca alto={34} />

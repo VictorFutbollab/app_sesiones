@@ -10,7 +10,7 @@ html[data-tema='oscuro'] .tarjeta, html[data-tema='oscuro'] .proxima, html[data-
 
 /* Botones: primario verde césped con sombra; secundarios blancos */
 .btn { border-radius: 999px; border-color: var(--line-2); background: var(--surface); padding: 0 20px; }
-.btn.primario { box-shadow: 0 8px 20px -10px rgb(31 111 58 / 0.6); }
+.btn.primario { box-shadow: 0 8px 20px -10px rgb(30 79 140 / 0.6); }
 .btn.primario:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 88%, #000); }
 .btn.grande { border-radius: 999px; }
 .btn-icono { border-radius: 50%; }
@@ -42,11 +42,11 @@ html[data-tema='oscuro'] .campo input, html[data-tema='oscuro'] .campo select, h
 @media (min-width: 1024px) { .aviso-flotante { bottom: 24px; } }
 
 /* ── Inicio: portada de césped a franjas con las líneas del campo ── */
-.portada { position: relative; overflow: hidden; margin: -16px -16px 0; padding: 30px 20px 64px; color: #fff; background: repeating-linear-gradient(90deg, var(--cesped-1) 0 48px, var(--cesped-2) 48px 96px); border-radius: 0 0 32px 32px; }
+.portada { position: relative; overflow: hidden; margin: -16px -16px 0; padding: 30px 20px 64px; color: #fff; background: var(--pizarra-fondo); border-radius: 0 0 32px 32px; }
 .portada-campo { position: absolute; inset: 0 0 auto 0; width: 100%; height: 300px; fill: none; stroke: #fff; stroke-width: 2; opacity: 0.32; pointer-events: none; }
-.portada-fecha, .portada-sub { position: relative; margin: 0; font-size: 0.95em; color: #DDEFE2; }
+.portada-fecha, .portada-sub { position: relative; margin: 0; font-size: 0.95em; color: #D6E3F3; }
 .portada-equipo { position: relative; margin: 6px 0 8px; font-size: clamp(2.6rem, 11vw, 4.2rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.045em; color: #fff; }
-.indicadores { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: -44px 0 0; padding: 4px 18px; border-radius: var(--r-lg); background: var(--surface); box-shadow: 0 12px 30px -14px rgb(16 32 24 / 0.35); }
+.indicadores { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: -44px 0 0; padding: 4px 18px; border-radius: var(--r-lg); background: var(--surface); box-shadow: 0 12px 30px -14px rgb(15 36 64 / 0.35); }
 .indicadores > div { padding: 14px 0 14px 14px; border-left: 1px solid var(--line); display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 4px; }
 .indicadores > div:first-child { padding-left: 0; border-left: 0; }
 .indicadores dt { font-size: 0.8em; color: var(--text-2); line-height: 1.25; }
@@ -78,7 +78,7 @@ html[data-tema='oscuro'] .campo input, html[data-tema='oscuro'] .campo select, h
 
 /* ── Tarjeta de ejercicio: miniatura del campo recortada y cuerpo blanco ── */
 .tarjeta-ej { border-radius: var(--r-lg); border: 0; }
-.tarjeta-ej:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgb(16 32 24 / 0.05), 0 16px 32px -14px rgb(16 32 24 / 0.25); }
+.tarjeta-ej:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgb(15 36 64 / 0.05), 0 16px 32px -14px rgb(15 36 64 / 0.25); }
 .tarjeta-ej .mini { aspect-ratio: 16 / 10; overflow: hidden; background: var(--campo-2); }
 .tarjeta-ej .mini > div, .tarjeta-ej .mini .pizarra { width: 100%; height: 100%; }
 .tarjeta-ej .cuerpo { padding: 14px 16px 16px; gap: 8px; }
@@ -110,11 +110,11 @@ html[data-tema='oscuro'] .cal button[aria-pressed='true'] { background: var(--te
 .paleta { background: var(--surface); border-color: transparent; box-shadow: var(--sombra); }
 
 /* ── Entrada: partido nocturno bajo un foco, con la tarjeta encima ──
-   Foto: "Soccer at night" (Unsplash, 2015), Wikimedia Commons, CC0 (dominio público).
-   Es la misma de FutbolLab Jugadores. */
+   Fondo: pizarra táctica dibujada (en Jugadores es una foto).
+ */
 .acceso { min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: calc(28px + env(safe-area-inset-top)) 18px 24px; position: relative; overflow: hidden; }
-.acceso-campo { position: fixed; inset: 0; pointer-events: none; background: linear-gradient(rgb(6 14 10 / 0.1), rgb(6 14 10 / 0) 40%, rgb(6 14 10 / 0.35)), url('/acceso-fondo.jpg') center 35% / cover no-repeat, #0C1A12; }
-.acceso-caja { position: relative; width: 100%; max-width: 460px; padding: 0 32px 30px; border-radius: 26px; background: var(--surface); box-shadow: 0 18px 40px -18px rgb(16 32 24 / 0.35); overflow: hidden; }
+.acceso-campo { position: fixed; inset: 0; pointer-events: none; background: linear-gradient(rgb(6 12 26 / 0.1), rgb(6 12 26 / 0) 40%, rgb(6 12 26 / 0.35)), #0B1626; }
+.acceso-caja { position: relative; width: 100%; max-width: 460px; padding: 0 32px 30px; border-radius: 26px; background: var(--surface); box-shadow: 0 18px 40px -18px rgb(15 36 64 / 0.35); overflow: hidden; }
 .acceso-marca { text-align: center; margin: 0 -32px 20px; padding: 28px 32px 24px; background: var(--tinta); }
 .acceso-app { margin: 10px 0 0; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--amarillo); }
 .acceso-lema { margin: 12px auto 0; max-width: 300px; color: var(--tinta-2); font-size: 0.95rem; }
@@ -127,7 +127,7 @@ html[data-tema='oscuro'] .cal button[aria-pressed='true'] { background: var(--te
 /* Móvil: foto arriba, logo sobre la foto y el formulario en una hoja blanca que sube */
 @media (max-width: 759px) {
   .acceso { padding: 0; align-items: stretch; justify-content: flex-start; background: var(--surface); }
-  .acceso-campo { position: absolute; inset: 0 0 auto 0; height: max(400px, 54vh); background: linear-gradient(rgb(6 14 10 / 0.25), rgb(6 14 10 / 0.05) 45%, rgb(6 14 10 / 0.55)), url('/acceso-fondo.jpg') 50% 40% / cover no-repeat, #0C1A12; }
+  .acceso-campo { position: absolute; inset: 0 0 auto 0; height: max(400px, 54vh); background: linear-gradient(rgb(6 12 26 / 0.25), rgb(6 12 26 / 0.05) 45%, rgb(6 12 26 / 0.55)), #0B1626; }
   .acceso-caja { margin: 0; max-width: none; padding: 0; border-radius: 0; background: transparent; box-shadow: none; overflow: visible; }
   .acceso-marca { margin: 0; min-height: calc(max(400px, 54vh) - 26px); padding: calc(max(118px, 15vh) + env(safe-area-inset-top)) 24px 40px; background: transparent; display: flex; flex-direction: column; align-items: center; text-shadow: 0 1px 8px rgb(0 0 0 / 0.7); }
   .acceso-marca .logo { filter: drop-shadow(0 2px 8px rgb(0 0 0 / 0.6)); }

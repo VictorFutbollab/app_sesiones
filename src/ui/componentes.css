@@ -14,7 +14,7 @@
 .redondo:hover { background: var(--surface-2); }
 .redondo:active { transform: scale(0.96); }
 .redondo:disabled { opacity: 0.4; cursor: not-allowed; }
-.redondo.primario { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 20px -10px rgb(31 111 58 / 0.7); }
+.redondo.primario { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 20px -10px rgb(30 79 140 / 0.7); }
 .redondo.primario:hover { background: color-mix(in srgb, var(--accent) 88%, #000); }
 .redondo.activo { color: #C99A00; }
 html[data-campo='si'] .redondo { width: 56px; height: 56px; }
@@ -66,34 +66,34 @@ a.fila-lista, button.fila-lista { cursor: pointer; }
 .pie-app { text-align: center; color: var(--text-3); font-size: 0.85em; margin: 10px 0 0; }
 
 /* Pestañas (segmentado): la elegida en blanco con sombra, como "Resumen" en Jugadores */
-.segmentado button[aria-pressed='true'] { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgb(16 32 24 / 0.12); }
+.segmentado button[aria-pressed='true'] { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgb(15 36 64 / 0.12); }
 html[data-tema='oscuro'] .segmentado button[aria-pressed='true'] { background: var(--surface-2); }
 .acceso .segmentado button[aria-pressed='true'] { background: var(--accent); color: var(--accent-ink); box-shadow: none; }
 .segmentado.lleno { display: flex; width: 100%; }
 .segmentado.lleno button { flex: 1; }
 
 /* Tarjeta de césped (hero), como la de la ficha del jugador */
-.hero { position: relative; overflow: hidden; display: flex; align-items: center; gap: 16px; padding: 22px; border-radius: var(--r-lg); color: #fff; background: repeating-linear-gradient(90deg, var(--cesped-1) 0 48px, var(--cesped-2) 48px 96px); box-shadow: var(--sombra); }
+.hero { position: relative; overflow: hidden; display: flex; align-items: center; gap: 16px; padding: 22px; border-radius: var(--r-lg); color: #fff; background: var(--pizarra-fondo); box-shadow: var(--sombra); }
 .hero::after { content: ''; position: absolute; right: -70px; top: 50%; width: 230px; height: 230px; border: 2px solid rgb(255 255 255 / 0.22); border-radius: 50%; transform: translateY(-50%); pointer-events: none; }
-.hero-txt { flex: 1; min-width: 0; display: grid; gap: 6px; color: #DDEFE2; position: relative; z-index: 1; }
+.hero-txt { flex: 1; min-width: 0; display: grid; gap: 6px; color: #D6E3F3; position: relative; z-index: 1; }
 .hero-txt strong { color: #fff; }
 .hero-num { position: relative; z-index: 1; text-align: right; display: grid; justify-items: end; gap: 2px; flex: none; }
 .hero-num b { font-family: var(--f-titulo); font-size: 3.2em; font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; color: #fff; }
-.hero-num span { font-size: 0.85em; color: #DDEFE2; }
+.hero-num span { font-size: 0.85em; color: #D6E3F3; }
 .chip-blanco { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 4px 12px; border-radius: 999px; background: #fff; color: var(--cesped-1); font-weight: 700; font-size: 0.85em; }
 .chip-blanco.aviso { color: #6B4E00; }
 .hero .duracion .barra { background: rgb(255 255 255 / 0.22); }
 
 /* Pie con la acción principal (como "Guardar evaluación") */
-.pie-fijo { position: sticky; bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 15; margin: 16px -6px 0; padding: 10px; border-radius: 26px; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(8px); box-shadow: 0 10px 30px -12px rgb(16 32 24 / 0.35); display: flex; gap: 10px; align-items: center; }
+.pie-fijo { position: sticky; bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 15; margin: 16px -6px 0; padding: 10px; border-radius: 26px; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(8px); box-shadow: 0 10px 30px -12px rgb(15 36 64 / 0.35); display: flex; gap: 10px; align-items: center; }
 .pie-fijo .btn.grande { flex: 1; }
 @media (min-width: 1024px) { .pie-fijo { bottom: 16px; } }
-.btn.amarillo { background: var(--amarillo); border-color: var(--amarillo); color: var(--tinta); box-shadow: 0 8px 20px -10px rgb(138 97 0 / 0.6); }
-.btn.amarillo:hover:not(:disabled) { background: #F5CD50; }
+.btn.amarillo { background: var(--amarillo); border-color: var(--amarillo); color: var(--tinta); box-shadow: 0 8px 20px -10px rgb(180 80 20 / 0.6); }
+.btn.amarillo:hover:not(:disabled) { background: #FF9150; }
 
 /* ═══════════ Modo campo, como la evaluación rápida de Jugadores: claro y grande ═══════════ */
-html[data-campo='si'] { --bg: #EEF2EE; --bg-2: #E3EAE4; --surface: #FFFFFF; --surface-2: #F1F5F1; --surface-3: #DFE8E1; --text: #102018; --text-2: #3E4F45; --text-3: #4C5D53; --line: rgb(16 32 24 / 0.10); --line-2: rgb(16 32 24 / 0.2); --accent: #1F6F3A; --accent-2: #1F7A3C; --accent-ink: #FFFFFF; --amber: #8A6100; --sombra: 0 1px 2px rgb(16 32 24 / 0.05), 0 8px 24px -12px rgb(16 32 24 / 0.16); color-scheme: light; }
-html[data-campo='si'][data-tema='oscuro'] { --bg: #0C1A12; --bg-2: #08130D; --surface: #13241A; --surface-2: #1A2F22; --surface-3: #24402E; --text: #FFFFFF; --text-2: #C9D8CE; --text-3: #A8BDB0; --line: rgb(230 242 234 / 0.12); --accent: #6CC58A; --accent-2: #7BD08A; --accent-ink: #0C1A12; --amber: #F2C230; --sombra: none; color-scheme: dark; }
+html[data-campo='si'] { --bg: #EEF2F7; --bg-2: #E2E8F1; --surface: #FFFFFF; --surface-2: #F1F4F9; --surface-3: #DCE4EF; --text: #0F2440; --text-2: #3D4C61; --text-3: #4A5A70; --line: rgb(15 36 64 / 0.10); --line-2: rgb(15 36 64 / 0.2); --accent: #1E4F8C; --accent-2: #1A5BA6; --accent-ink: #FFFFFF; --amber: #8A6100; --sombra: 0 1px 2px rgb(15 36 64 / 0.05), 0 8px 24px -12px rgb(15 36 64 / 0.16); color-scheme: light; }
+html[data-campo='si'][data-tema='oscuro'] { --bg: #0B1626; --bg-2: #07101D; --surface: #12213A; --surface-2: #192B47; --surface-3: #233A5C; --text: #FFFFFF; --text-2: #C6D3E5; --text-3: #A9B9D0; --line: rgb(230 238 250 / 0.12); --accent: #6FA8E8; --accent-2: #86B8F0; --accent-ink: #0B1626; --amber: #FF7A2F; --sombra: none; color-scheme: dark; }
 .campo-pantalla { background: var(--bg); grid-template-rows: auto 1fr auto; }
 .campo-pantalla > header { display: block; border-bottom: 0; padding: 0 16px; padding-top: env(safe-area-inset-top); max-width: 1100px; width: 100%; margin: 0 auto; }
 .campo-pantalla > header .cabecera h1 { font-size: 1.7em; }
@@ -119,8 +119,8 @@ html[data-campo='si'][data-tema='oscuro'] { --bg: #0C1A12; --bg-2: #08130D; --su
 .recuento { display: inline-flex; padding: 4px 12px; border-radius: 999px; background: var(--surface-3); font-weight: 700; font-size: 0.9em; }
 
 /* Cronómetro: tarjeta de césped con el tiempo en blanco */
-.crono { padding: 22px 18px; border-radius: var(--r-lg); color: #fff; background: repeating-linear-gradient(90deg, var(--cesped-1) 0 48px, var(--cesped-2) 48px 96px); box-shadow: var(--sombra); border: 0; }
-.crono .sec { color: #DDEFE2; }
+.crono { padding: 22px 18px; border-radius: var(--r-lg); color: #fff; background: var(--pizarra-fondo); box-shadow: var(--sombra); border: 0; }
+.crono .sec { color: #D6E3F3; }
 .crono .tiempo { color: #fff; }
 .crono .tiempo.descanso { color: #BFE3FF; }
 .crono .tiempo.aviso { color: var(--amarillo); }
@@ -165,8 +165,8 @@ html[data-campo='si'][data-tema='oscuro'] { --bg: #0C1A12; --bg-2: #08130D; --su
 .plan ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
 .plan li { display: flex; gap: 10px; align-items: flex-start; }
 .plan li svg { flex: none; color: var(--accent-2); margin-top: 1px; }
-.plan.pro { color: #fff; background: repeating-linear-gradient(90deg, var(--cesped-1) 0 48px, var(--cesped-2) 48px 96px); }
-.plan.pro .precio small, .plan.pro .sec { color: #DDEFE2; }
+.plan.pro { color: #fff; background: var(--pizarra-fondo); }
+.plan.pro .precio small, .plan.pro .sec { color: #D6E3F3; }
 .plan.pro li svg { color: var(--amarillo); }
 .plan.pro .btn:not(.amarillo) { background: rgb(255 255 255 / 0.14); border-color: rgb(255 255 255 / 0.35); color: #fff; box-shadow: none; }
 
@@ -212,3 +212,17 @@ html[data-campo='si'][data-tema='oscuro'] { --bg: #0C1A12; --bg-2: #08130D; --su
 @media (min-width: 700px) { .plantilla-fila { grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "dorsal nombre quitar" "dorsal pos disp"; } }
 .plantilla-fila .p-pos { width: auto; max-width: 170px; }
 .campo-pantalla main { padding-bottom: 28px; }
+
+/* Portada de pizarra: la jugada en tiza blanca y los conos en naranja */
+.portada-campo { stroke-width: 4; stroke-linecap: round; opacity: 0.5 !important; }
+.portada-campo .cono { fill: var(--amarillo); stroke: none; }
+
+/* Entrada: pizarra azul noche con medio campo y una jugada en tiza */
+.acceso-campo { background: linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(#0F2440, #14315A); overflow: hidden; }
+.acceso-jugada { position: absolute; inset: 0; width: 100%; height: 100%; }
+.acceso-jugada .lineas { fill: none; stroke: rgb(214 227 243 / 0.28); stroke-width: 2.5; }
+.acceso-jugada .jugada { fill: none; stroke: rgb(214 227 243 / 0.6); stroke-width: 3; stroke-linecap: round; }
+.acceso-jugada .rival { stroke: var(--amarillo); }
+.acceso-jugada .cono { fill: var(--amarillo); stroke: none; }
+@media (min-width: 1024px) { .acceso-jugada { width: 60vw; } }
+.acceso-jugada .jugada { stroke: rgb(214 227 243 / 0.5); }

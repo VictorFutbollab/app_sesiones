@@ -67,6 +67,7 @@ for (const b of ['Activación', 'Principal 1', 'Principal 2', 'Vuelta a la calma
   await page.getByRole('dialog').getByRole('button', { name: 'Añadir' }).first().click()
   await page.getByRole('dialog').waitFor({ state: 'detached' })
 }
+await page.waitForFunction(() => document.querySelectorAll('[data-item]').length >= 4, null, { timeout: 5000 }).catch(() => undefined)
 const items = await page.locator('[data-item]').count()
 ok('Sesión de 4 bloques < 5 min', items === 4 && Date.now() - t0 < 300000, `${((Date.now() - t0) / 1000).toFixed(1)} s, ${items} ejercicios, 10 toques`)
 await shot('06-constructor')

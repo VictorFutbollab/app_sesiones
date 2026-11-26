@@ -9,28 +9,30 @@
    (≥ 64 px en modo campo). Tema "Noche" opcional en Perfil. */
 
 :root {
-  --bg: #EEF2EE; --bg-2: #E3EAE4; --surface: #FFFFFF; --surface-2: #F1F5F1; --surface-3: #DFE8E1;
-  --line: rgb(16 32 24 / 0.08); --line-2: rgb(16 32 24 / 0.16);
-  --text: #102018; --text-2: #4C5D53; --text-3: #57685E;
-  --accent: #1F6F3A; --accent-2: #1F7A3C; --accent-ink: #FFFFFF; --accent-soft: rgb(31 111 58 / 0.10);
+  --bg: #EEF2F7; --bg-2: #E2E8F1; --surface: #FFFFFF; --surface-2: #F1F4F9; --surface-3: #DCE4EF;
+  --line: rgb(15 36 64 / 0.08); --line-2: rgb(15 36 64 / 0.16);
+  --text: #0F2440; --text-2: #4A5A70; --text-3: #56677D;
+  --accent: #1E4F8C; --accent-2: #1A5BA6; --accent-ink: #FFFFFF; --accent-soft: rgb(30 79 140 / 0.10);
   --amber: #8A6100; --amber-soft: rgb(242 194 48 / 0.22); --blue: #2A7FB8; --danger: #B3362E;
-  --amarillo: #F2C230; --tinta: #102018; --tinta-2: #C8D6CC;
-  --cesped-1: #1F6F3A; --cesped-2: #237A40;
+  --amarillo: #FF7A2F; --tinta: #0F2440; --tinta-2: #C3D2E6;
+  --cesped-1: #1E4F8C; --cesped-2: #22589A;
+  /* Fondo de pizarra: azul con una cuadrícula de tiza muy suave (la identidad de Sesiones) */
+  --pizarra-fondo: linear-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px) 0 0 / 28px 28px, linear-gradient(90deg, rgb(255 255 255 / 0.07) 1px, transparent 1px) 0 0 / 28px 28px, var(--cesped-1);
   --campo: #1C5A34; --campo-2: #1F6239; --campo-linea: rgb(255 255 255 / 0.82);
   --r-sm: 10px; --r: 16px; --r-lg: 22px; --anim: 160ms;
   --f-titulo: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', 'Inter', system-ui, sans-serif; --f-texto: 'Inter', system-ui, sans-serif;
-  --sombra: 0 1px 2px rgb(16 32 24 / 0.04), 0 8px 24px -12px rgb(16 32 24 / 0.14);
+  --sombra: 0 1px 2px rgb(15 36 64 / 0.04), 0 8px 24px -12px rgb(15 36 64 / 0.14);
   --toque: 44px; --escala: 1;
   color-scheme: light;
 }
 /* Césped de noche: la misma idea en oscuro */
 html[data-tema='oscuro'] {
-  --bg: #0C1A12; --bg-2: #08130D; --surface: #13241A; --surface-2: #1A2F22; --surface-3: #24402E;
-  --line: rgb(230 242 234 / 0.08); --line-2: rgb(230 242 234 / 0.16);
-  --text: #EEF5F0; --text-2: #A8BDB0; --text-3: #93A99B;
-  --accent: #6CC58A; --accent-2: #7BD08A; --accent-ink: #0C1A12; --accent-soft: rgb(108 197 138 / 0.14);
-  --amber: #F2C230; --amber-soft: rgb(242 194 48 / 0.16); --blue: #5AB4E5; --danger: #E0645C;
-  --tinta: #08130D; --cesped-1: #18572D; --cesped-2: #1C6133;
+  --bg: #0B1626; --bg-2: #07101D; --surface: #12213A; --surface-2: #192B47; --surface-3: #233A5C;
+  --line: rgb(230 238 250 / 0.08); --line-2: rgb(230 238 250 / 0.16);
+  --text: #EEF3FA; --text-2: #A9B9D0; --text-3: #93A4BD;
+  --accent: #6FA8E8; --accent-2: #86B8F0; --accent-ink: #0B1626; --accent-soft: rgb(111 168 232 / 0.14);
+  --amber: #FF7A2F; --amber-soft: rgb(242 194 48 / 0.16); --blue: #5AB4E5; --danger: #E0645C;
+  --tinta: #07101D; --cesped-1: #142F55; --cesped-2: #183764;
   --sombra: none;
   color-scheme: dark;
 }
@@ -56,7 +58,7 @@ h1 { font-size: 2.2em; font-weight: 800; letter-spacing: -0.035em; line-height: 
 .contenido { padding: 16px 16px calc(112px + env(safe-area-inset-bottom)); max-width: 1120px; width: 100%; margin: 0 auto; }
 
 /* Barra superior: verde casi negro con el logo oficial (el texto "Futbol" del logo es blanco) */
-.barra-sup { display: flex; align-items: center; gap: 12px; padding: 10px 16px; padding-top: calc(10px + env(safe-area-inset-top)); position: sticky; top: 0; z-index: 20; background: var(--tinta); color: #EEF5F0; min-height: 61px; }
+.barra-sup { display: flex; align-items: center; gap: 12px; padding: 10px 16px; padding-top: calc(10px + env(safe-area-inset-top)); position: sticky; top: 0; z-index: 20; background: var(--tinta); color: #EEF3FA; min-height: 61px; }
 .marca { display: flex; align-items: center; text-decoration: none; flex: none; }
 .logo { display: inline-flex; align-items: center; gap: 10px; }
 .logo img { display: block; height: 100%; width: auto; }
@@ -77,7 +79,7 @@ h1 { font-size: 2.2em; font-weight: 800; letter-spacing: -0.035em; line-height: 
 @media (max-width: 380px) { .logo-app { display: none; } }
 
 /* Navegación del móvil: píldora oscura flotante */
-.nav-inf { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 30; display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; max-width: 640px; margin: 0 auto; padding: 6px; border-radius: 24px; background: var(--tinta); box-shadow: 0 14px 34px -12px rgb(16 32 24 / 0.5); }
+.nav-inf { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 30; display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; max-width: 640px; margin: 0 auto; padding: 6px; border-radius: 24px; background: var(--tinta); box-shadow: 0 14px 34px -12px rgb(15 36 64 / 0.5); }
 .nav-inf a, .nav-lat a { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: var(--tinta-2); font-size: 0.72em; font-weight: 600; padding: 6px 0; min-height: 52px; justify-content: center; border-radius: 18px; transition: background var(--anim), color var(--anim); }
 .nav-inf a[aria-current='page'], .nav-lat a[aria-current='page'] { background: #fff; color: var(--tinta); }
 .nav-inf .mas span.circulo { width: 46px; height: 46px; border-radius: 16px; background: var(--amarillo); color: var(--tinta); display: grid; place-items: center; }
@@ -92,7 +94,7 @@ h1 { font-size: 2.2em; font-weight: 800; letter-spacing: -0.035em; line-height: 
   .nav-lat a:hover { background: rgb(255 255 255 / 0.08); color: #fff; }
   .nav-lat a[aria-current='page']:hover { background: #fff; color: var(--tinta); }
   .nav-lat .crear { background: var(--amarillo); color: var(--tinta); font-weight: 700; margin-bottom: 14px; }
-  .nav-lat .crear:hover { background: #F5CD50; color: var(--tinta); }
+  .nav-lat .crear:hover { background: #FF9150; color: var(--tinta); }
   .nav-lat .pie { margin-top: auto; }
   .nav-lat .estado-sync { background: rgb(255 255 255 / 0.08); border-color: transparent; color: var(--tinta-2); }
   .contenido { padding: 8px 40px 48px; }
@@ -216,7 +218,7 @@ label.campo { display: grid; gap: 6px; font-size: 0.88em; font-weight: 600; colo
 .duracion { display: grid; gap: 6px; }
 .duracion .barra { height: 10px; border-radius: 6px; background: var(--surface-3); overflow: hidden; display: flex; }
 .duracion .barra i { display: block; height: 100%; }
-.b-activacion { background: var(--blue); } .b-principal1 { background: var(--accent-2); } .b-principal2 { background: #18803F; } .b-calma { background: #8FA89A; }
+.b-activacion { background: var(--blue); } .b-principal1 { background: var(--accent-2); } .b-principal2 { background: var(--tinta); } .b-calma { background: #9AA9BD; }
 .duracion.pasada .total { color: var(--amber); }
 .bloque-ses { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); padding: 12px; display: grid; gap: 8px; }
 .bloque-ses > header { display: flex; align-items: center; gap: 10px; }

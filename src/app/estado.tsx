@@ -99,7 +99,7 @@ export function Proveedor({ children, pantallaAcceso }: { children: ReactNode; p
 
   useEffect(() => {
     document.documentElement.dataset.tema = tema
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#102018')
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#0F2440')
   }, [tema])
 
   // Equipos (para el equipo activo)

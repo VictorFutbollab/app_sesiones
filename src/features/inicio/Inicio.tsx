@@ -60,12 +60,6 @@ export function Inicio() {
   return (
     <div>
       <header className="portada">
-        <svg className="portada-campo" viewBox="0 0 390 300" aria-hidden preserveAspectRatio="xMidYMin slice">
-          <circle cx="195" cy="0" r="92" />
-          <rect x="95" y="200" width="200" height="110" />
-          <rect x="150" y="260" width="90" height="50" />
-          <path d="M155 200 A45 45 0 0 1 235 200" />
-        </svg>
         <p className="portada-fecha">Hola, {usuario.nombre.split(' ')[0]} · {fechaLarga(hoy()).toLowerCase()}</p>
         <h1 className="portada-equipo">{eq.nombre}</h1>
         <p className="portada-sub">{plantilla ? `${plantilla} jugadores · ${plantilla - disponibles === 0 ? 'todos disponibles' : `${plantilla - disponibles} no disponibles`}` : 'Añade tu plantilla en Perfil para pasar lista en el campo'}</p>
