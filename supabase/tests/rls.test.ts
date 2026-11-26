@@ -64,9 +64,9 @@ const EQ_A = uuid(1), EQ_P = uuid(2)
 beforeAll(async () => {
   db = new PGlite()
   await db.exec(ENTORNO)
-  const dir = fileURLToPath(new URL('../migrations', import.meta.url))
+  const dir = fileURLToPath(new URL('../proyecto-propio', import.meta.url))
   // 0004 usa el esquema storage de Supabase, que no existe en PGlite.
-  for (const f of readdirSync(dir).filter((x) => x.endsWith('.sql') && !x.includes('storage')).sort()) await db.exec(readFileSync(join(dir, f), 'utf8'))
+  for (const f of readdirSync(dir).filter((x) => x.endsWith('.sql') && !x.includes('storage') && !x.includes('seed')).sort()) await db.exec(readFileSync(join(dir, f), 'utf8'))
   for (const [k, id] of Object.entries(U)) {
     await db.query(`insert into auth.users values ($1, $2, $3)`, [id, `${k}@club.test`, JSON.stringify({ nombre: k, role: 'admin', plan: 'pro' })])
     await db.query(`insert into auth.sessions (id, user_id) values ($1, $2)`, [SESION[id], id])
@@ -230,7 +230,7 @@ describe('cuerpo técnico (Pro) y administración', () => {
 
 describe('semilla de demostración', () => {
   it('seed.sql carga el catálogo y un usuario Gratis lo ve', async () => {
-    await db.exec(readFileSync(fileURLToPath(new URL('../seed.sql', import.meta.url)), 'utf8'))
+    await db.exec(readFileSync(fileURLToPath(new URL('../proyecto-propio/seed.sql', import.meta.url)), 'utf8'))
     const n = await filas(U.bea, `select count(*)::int as n from public.ejercicios where origen = 'demo'`)
     expect(n[0].n).toBe(16)
   })
