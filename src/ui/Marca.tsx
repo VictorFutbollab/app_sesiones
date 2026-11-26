@@ -42,28 +42,7 @@ export function AvatarFutbol({ size = 40 }: { size?: number }) {
 export function MarcoAcceso({ children, lema = 'La sesión de mañana, lista en 5 minutos.' }: { children: ReactNode; lema?: string }) {
   return (
     <div className="acceso">
-      <div className="acceso-campo" aria-hidden>
-        {/* Pizarra táctica con medio campo y una jugada en tiza (Jugadores usa una foto; Sesiones, la pizarra) */}
-        <svg className="acceso-jugada" viewBox="0 0 400 520" preserveAspectRatio="xMidYMid meet">
-          <defs><marker id="acceso-punta" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#D6E3F3" /></marker></defs>
-          <g className="lineas">
-            <rect x="20" y="20" width="360" height="480" rx="4" />
-            <line x1="20" y1="500" x2="380" y2="500" />
-            <rect x="110" y="20" width="180" height="90" />
-            <rect x="160" y="20" width="80" height="34" />
-            <path d="M160 110 A40 40 0 0 0 240 110" />
-            <path d="M140 500 A60 60 0 0 1 260 500" />
-          </g>
-          <g className="jugada" transform="translate(0 110)">
-            <circle cx="90" cy="360" r="12" /><circle cx="200" cy="300" r="12" /><circle cx="310" cy="380" r="12" /><circle cx="250" cy="190" r="12" />
-            <path d="M102 352 C140 330 165 315 186 306" strokeDasharray="8 8" markerEnd="url(#acceso-punta)" />
-            <path d="M208 288 L242 204" markerEnd="url(#acceso-punta)" />
-            <path d="M300 368 C290 300 280 250 262 206" strokeDasharray="8 8" markerEnd="url(#acceso-punta)" />
-            <path d="M150 240 l12 12 M162 240 l-12 12 M300 250 l12 12 M312 250 l-12 12" className="rival" />
-            <path d="M60 440 l10 18 h-20 z M340 440 l10 18 h-20 z" className="cono" />
-          </g>
-        </svg>
-      </div>
+      <div className="acceso-campo" aria-hidden />
       <div className="acceso-caja">
         <div className="acceso-marca">
           <Marca alto={34} />
