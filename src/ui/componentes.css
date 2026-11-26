@@ -218,8 +218,10 @@ html[data-campo='si'][data-tema='oscuro'] { --bg: #0B1626; --bg-2: #07101D; --su
 .portada-campo .cono { fill: var(--amarillo); stroke: none; }
 
 
-/* Entrada: ilustración propia (public/acceso-fondo.svg), sin fotos de terceros */
-.acceso-campo { background: linear-gradient(rgb(4 9 19 / 0.15), rgb(4 9 19 / 0) 40%, rgb(4 9 19 / 0.35)), url('/acceso-fondo.svg') center 40% / cover no-repeat, #0B1626; }
+/* Entrada: foto «Soccer Field» de Abigail Keenan (StockSnap), CC0 1.0 = dominio público: uso comercial
+   permitido, sin atribución obligatoria. https://creativecommons.org/publicdomain/zero/1.0/
+   Es distinta de la de Jugadores; equipo al anochecer bajo los focos, sin caras reconocibles ni marcas. */
+.acceso-campo { background: linear-gradient(rgb(8 18 36 / 0.55), rgb(8 18 36 / 0.25) 45%, rgb(4 9 19 / 0.45)), url('/acceso-fondo.jpg') center 62% / cover no-repeat, #0B1626; }
 @media (max-width: 759px) {
-  .acceso-campo { background: linear-gradient(rgb(4 9 19 / 0.25), rgb(4 9 19 / 0.05) 45%, rgb(4 9 19 / 0.5)), url('/acceso-fondo.svg') 50% 45% / cover no-repeat, #0B1626; }
+  .acceso-campo { background: linear-gradient(rgb(8 18 36 / 0.6), rgb(8 18 36 / 0.3) 50%, rgb(4 9 19 / 0.55)), url('/acceso-fondo.jpg') 50% 72% / cover no-repeat, #0B1626; }
 }
